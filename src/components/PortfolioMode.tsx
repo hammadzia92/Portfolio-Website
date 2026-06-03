@@ -14,6 +14,7 @@ import {
   ABOUT_DATA,
   CONTACT_DATA,
 } from "./ArtboardContent";
+import SplitText from "./SplitText";
 
 interface PortfolioModeProps {
   onSwitchMode: () => void;
@@ -57,7 +58,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
     };
   }, [mobileMenuOpen]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, name: string) => {
+  const handleMouseMove = (e: React.MouseEvent<any>, name: string) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -77,6 +78,10 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
+
     const handleScroll = () => {
       const currentY = window.scrollY;
       if (currentY < 80) {
@@ -366,7 +371,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
           </div>
 
           <div className="flex items-center gap-5">
-            <nav className="hidden md:flex items-center gap-8 font-mono text-sm text-white/80 tracking-wide uppercase">
+            <nav className="hidden md:flex items-center gap-8 font-heading text-sm text-white/80 tracking-wide uppercase font-medium">
               <a href="#work" className="hover:text-white transition-colors duration-200 relative group font-medium">
                 Work
                 <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-white group-hover:w-full transition-all duration-300" />
@@ -392,7 +397,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
                   <rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="17" cy="11" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="13" r="1" fill="currentColor" stroke="none"/>
                 </svg>
                 Games
-                <span className="inline-flex items-center bg-violet-500/20 text-violet-300 font-mono text-[7px] uppercase tracking-wider rounded-full px-1.5 py-0.5 leading-none border border-violet-500/30 select-none">
+                <span className="inline-flex items-center bg-violet-500/20 text-violet-300 font-heading text-[7px] uppercase tracking-wider rounded-full px-1.5 py-0.5 leading-none border border-violet-500/30 select-none">
                   Fun
                 </span>
                 <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-violet-400 group-hover:w-full transition-all duration-300" />
@@ -407,7 +412,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
               href={CONTACT_DATA.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden md:inline-flex items-center gap-2 bg-white text-black font-semibold font-mono text-[10px] uppercase tracking-widest rounded-full px-4 py-2 hover:bg-white/90 hover:shadow-[0_0_12px_rgba(255,255,255,0.25)] transition-all duration-200 select-none group"
+              className="hidden md:inline-flex items-center gap-2 bg-white text-black font-semibold font-heading text-[10px] uppercase tracking-widest rounded-full px-4 py-2 hover:bg-white/90 hover:shadow-[0_0_12px_rgba(255,255,255,0.25)] transition-all duration-200 select-none group"
             >
               <svg className="w-3 h-3 shrink-0 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/>
@@ -431,11 +436,11 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
                   <path d="M3 15C3 13.343 4.343 12 6 12C7.657 12 9 13.343 9 15C9 16.657 7.657 18 6 18C4.343 18 3 16.657 3 15Z" fill="#34D399"/>
                   <path d="M9 6H12C13.657 6 15 7.343 15 9C15 10.657 13.657 12 12 12H9V6Z" fill="#F59E0B"/>
                 </svg>
-                <span className="font-mono text-[10px] uppercase tracking-widest text-white/70 group-hover:text-white transition-colors duration-200">
+                <span className="font-heading text-[10px] uppercase tracking-widest text-white/70 group-hover:text-white transition-colors duration-200">
                   Design File
                 </span>
                 {/* New badge */}
-                <span className="flex items-center justify-center bg-gradient-to-r from-violet-500 to-indigo-500 text-white font-mono text-[8px] uppercase tracking-wider rounded-full px-1.5 py-0.5 leading-none select-none">
+                <span className="flex items-center justify-center bg-gradient-to-r from-violet-500 to-indigo-500 text-white font-heading text-[8px] uppercase tracking-wider rounded-full px-1.5 py-0.5 leading-none select-none">
                   New
                 </span>
               </span>
@@ -523,7 +528,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
                 href={CONTACT_DATA.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full text-center bg-white text-black font-semibold font-mono text-xs uppercase tracking-widest rounded-full py-4 hover:bg-white/90 transition-all duration-200"
+                className="w-full text-center bg-white text-black font-semibold font-heading text-xs uppercase tracking-widest rounded-full py-4 hover:bg-white/90 transition-all duration-200"
               >
                 Resume
               </a>
@@ -532,7 +537,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
                   setMobileMenuOpen(false);
                   onSwitchMode();
                 }}
-                className="w-full text-center border border-white/10 hover:border-white/20 bg-white/[0.02] text-white/80 font-semibold font-mono text-xs uppercase tracking-widest rounded-full py-4 transition-all duration-200"
+                className="w-full text-center border border-white/10 hover:border-white/20 bg-white/[0.02] text-white/80 font-semibold font-heading text-xs uppercase tracking-widest rounded-full py-4 transition-all duration-200"
               >
                 Design File
               </button>
@@ -551,7 +556,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             {/* Left side: Hero Typography & Info */}
-            <div className="lg:col-span-6 flex flex-col items-start">
+            <div className="lg:col-span-7 flex flex-col items-start">
               {/* Availability badge */}
               <motion.div variants={itemVariants} className="mb-8">
                 <div className="inline-flex items-center gap-2.5 bg-white/[0.03] border border-white/[0.08] rounded-full px-4 py-2 select-none">
@@ -567,26 +572,73 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
 
 
               {/* Main headline */}
-              <motion.h1
-                variants={itemVariants}
+              <h1
                 className="font-heading font-light text-white leading-[1.06] tracking-tight mb-8"
                 style={{ fontSize: "clamp(2.8rem, 5.5vw, 4.8rem)" }}
               >
-                Design systems that{" "}
-                <span
-                  className="relative inline-block animate-pulse-glow"
-                  style={{
-                    background: "linear-gradient(135deg, #a78bfa 0%, #818cf8 40%, #38bdf8 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  scale.
+                <span className="block lg:inline-block lg:whitespace-nowrap">
+                  <SplitText
+                    text="Design systems"
+                    tag="span"
+                    className="inline-block"
+                    delay={35}
+                    duration={0.7}
+                    ease="power3.out"
+                    splitType="chars"
+                    from={{ opacity: 0, y: 30 }}
+                    to={{ opacity: 1, y: 0 }}
+                    textAlign="left"
+                  />
                 </span>
                 <br />
-                <span className="text-white/55 font-extralight">Interfaces that convert.</span>
-              </motion.h1>
+                <span className="block lg:inline-block lg:whitespace-nowrap">
+                  <SplitText
+                    text="that "
+                    tag="span"
+                    className="inline-block"
+                    delay={35}
+                    duration={0.7}
+                    ease="power3.out"
+                    splitType="chars"
+                    from={{ opacity: 0, y: 30 }}
+                    to={{ opacity: 1, y: 0 }}
+                    textAlign="left"
+                  />
+                  <SplitText
+                    text="scale."
+                    tag="span"
+                    className="relative inline-block animate-pulse-glow"
+                    style={{
+                      background: "linear-gradient(135deg, #a78bfa 0%, #818cf8 40%, #38bdf8 100%)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                    delay={35}
+                    duration={0.7}
+                    ease="power3.out"
+                    splitType="chars"
+                    from={{ opacity: 0, y: 30 }}
+                    to={{ opacity: 1, y: 0 }}
+                    textAlign="left"
+                  />
+                </span>
+                <br />
+                <span className="text-white/55 font-extralight block lg:inline-block lg:whitespace-nowrap">
+                  <SplitText
+                    text="Interfaces that convert."
+                    tag="span"
+                    className="inline-block"
+                    delay={25}
+                    duration={0.7}
+                    ease="power3.out"
+                    splitType="chars"
+                    from={{ opacity: 0, y: 30 }}
+                    to={{ opacity: 1, y: 0 }}
+                    textAlign="left"
+                  />
+                </span>
+              </h1>
 
               {/* Description */}
               <motion.p
@@ -602,23 +654,23 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
               <motion.div variants={itemVariants} className="flex items-center gap-5">
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-2.5 bg-white text-black font-mono text-[11px] uppercase tracking-widest px-6 py-3.5 rounded-full hover:bg-white/90 transition-all duration-200 font-semibold select-none"
+                  className="inline-flex items-center gap-2.5 bg-white text-black font-heading text-[11px] uppercase tracking-widest px-6 py-3.5 rounded-full hover:bg-white/90 transition-all duration-200 font-semibold select-none"
                 >
                   Start a project
                   <ArrowUpRight className="w-3.5 h-3.5" />
                 </a>
                 <a
                   href="#work"
-                  className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-white/40 hover:text-white transition-colors duration-200 select-none"
+                  className="inline-flex items-center gap-2 border border-white/10 hover:border-white/20 bg-white/[0.02] text-white/80 hover:text-white font-heading text-[11px] uppercase tracking-widest px-6 py-3.5 rounded-full transition-all duration-200 select-none group"
                 >
                   View work
-                  <span className="text-white/20">→</span>
+                  <span className="text-white/30 group-hover:translate-x-0.5 transition-transform duration-200">→</span>
                 </a>
               </motion.div>
             </div>
 
             {/* Right side: Portrait Frame & KPIs */}
-            <div className="lg:col-span-6 relative flex flex-col items-center justify-center gap-6 w-full">
+            <div className="lg:col-span-5 relative flex flex-col items-center lg:items-end justify-center gap-6 w-full">
               {/* Radial gradient background aura */}
               <div className="absolute -inset-10 bg-gradient-to-tr from-violet-500/10 via-indigo-500/5 to-transparent opacity-75 blur-3xl pointer-events-none" />
 
@@ -1351,7 +1403,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
                 <a
                   href={`mailto:${CONTACT_DATA.email}`}
                   onClick={handleCopyEmail}
-                  className="group relative inline-flex items-center gap-3 bg-white text-black font-mono text-[11px] uppercase tracking-widest px-8 py-4 rounded-full font-semibold hover:bg-white/90 transition-all duration-200 select-none overflow-hidden"
+                  className="group relative inline-flex items-center gap-3 bg-white text-black font-heading text-[11px] uppercase tracking-widest px-8 py-4 rounded-full font-semibold hover:bg-white/90 transition-all duration-200 select-none overflow-hidden"
                 >
                   <span className="absolute inset-0 bg-gradient-to-r from-violet-200/20 to-sky-200/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -1365,13 +1417,13 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
                   href={CONTACT_DATA.resume}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative inline-flex items-center gap-2.5 bg-white text-black font-semibold font-mono text-[11px] uppercase tracking-widest px-8 py-4 rounded-full hover:bg-white/90 hover:shadow-[0_0_20px_rgba(255,255,255,0.25)] transition-all duration-200 select-none"
+                  className="group relative inline-flex items-center gap-2.5 border border-white/10 hover:border-white/20 bg-white/[0.02] text-white/80 hover:text-white font-semibold font-heading text-[11px] uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-200 select-none"
                 >
-                  <svg className="w-3.5 h-3.5 shrink-0 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg className="w-3.5 h-3.5 shrink-0 text-white/50 group-hover:text-white transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/>
                   </svg>
                   View Resume
-                  <ArrowUpRight className="w-3.5 h-3.5 text-black group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-white/50 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
                 </a>
               </div>
 
@@ -1393,90 +1445,149 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
           </ScrollReveal>
 
           {/* Contact channel cards — premium icon tiles */}
-          <ScrollReveal delay={0.15}>
-            <div className="mt-20 grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
+          {(() => {
+            const emailGlow = activeGlow["email"] || { x: 0, y: 0, active: false };
+            const emailStyle = {
+              "--glow-x": `${emailGlow.x}px`,
+              "--glow-y": `${emailGlow.y}px`,
+              "--glow-intensity": emailGlow.active ? 1 : 0,
+              "--glow-color": "139, 92, 246",
+            } as React.CSSProperties;
 
-              {/* Email card */}
-              <a
-                href={`mailto:${CONTACT_DATA.email}`}
-                className="group relative flex flex-col items-center text-center gap-5 rounded-3xl border border-white/[0.07] bg-white/[0.02] hover:bg-white/[0.05] hover:border-violet-500/30 p-8 transition-all duration-500 overflow-hidden"
-              >
-                <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.12) 0%, transparent 70%)" }} />
-                {/* Logo */}
-                <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600/20 to-violet-400/10 border border-violet-500/20 flex items-center justify-center group-hover:scale-110 group-hover:border-violet-400/40 transition-all duration-300">
-                  <svg className="w-6 h-6 text-violet-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                    <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                  </svg>
-                </div>
-                {/* Text */}
-                <div className="space-y-1.5">
-                  <p className="font-heading text-base font-semibold text-white tracking-tight">Email</p>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-white/35">Send a message</p>
-                </div>
-                {/* Hover action tag */}
-                <span className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-violet-400/70 border border-violet-500/20 rounded-full px-3 py-1 bg-violet-500/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-300 select-none">
-                  Open mail
-                  <ArrowUpRight className="w-2.5 h-2.5" />
-                </span>
-              </a>
+            const linkedinGlow = activeGlow["linkedin"] || { x: 0, y: 0, active: false };
+            const linkedinStyle = {
+              "--glow-x": `${linkedinGlow.x}px`,
+              "--glow-y": `${linkedinGlow.y}px`,
+              "--glow-intensity": linkedinGlow.active ? 1 : 0,
+              "--glow-color": "14, 165, 233",
+            } as React.CSSProperties;
 
-              {/* LinkedIn card */}
-              <a
-                href={CONTACT_DATA.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative flex flex-col items-center text-center gap-5 rounded-3xl border border-white/[0.07] bg-white/[0.02] hover:bg-white/[0.05] hover:border-sky-500/30 p-8 transition-all duration-500 overflow-hidden"
-              >
-                <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(14,165,233,0.12) 0%, transparent 70%)" }} />
-                {/* Logo */}
-                <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-600/20 to-sky-400/10 border border-sky-500/20 flex items-center justify-center group-hover:scale-110 group-hover:border-sky-400/40 transition-all duration-300">
-                  <svg className="w-6 h-6 text-sky-300" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                  </svg>
-                </div>
-                {/* Text */}
-                <div className="space-y-1.5">
-                  <p className="font-heading text-base font-semibold text-white tracking-tight">LinkedIn</p>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-white/35">View profile</p>
-                </div>
-                {/* Hover action tag */}
-                <span className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-sky-400/70 border border-sky-500/20 rounded-full px-3 py-1 bg-sky-500/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-300 select-none">
-                  Connect
-                  <ArrowUpRight className="w-2.5 h-2.5" />
-                </span>
-              </a>
+            const behanceGlow = activeGlow["behance"] || { x: 0, y: 0, active: false };
+            const behanceStyle = {
+              "--glow-x": `${behanceGlow.x}px`,
+              "--glow-y": `${behanceGlow.y}px`,
+              "--glow-intensity": behanceGlow.active ? 1 : 0,
+              "--glow-color": "99, 102, 241",
+            } as React.CSSProperties;
 
-              {/* Behance card */}
-              <a
-                href={CONTACT_DATA.behance}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative flex flex-col items-center text-center gap-5 rounded-3xl border border-white/[0.07] bg-white/[0.02] hover:bg-white/[0.05] hover:border-indigo-500/30 p-8 transition-all duration-500 overflow-hidden"
-              >
-                <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{ background: "radial-gradient(ellipse at 50% 0%, rgba(99,102,241,0.12) 0%, transparent 70%)" }} />
-                {/* Logo */}
-                <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600/20 to-indigo-400/10 border border-indigo-500/20 flex items-center justify-center group-hover:scale-110 group-hover:border-indigo-400/40 transition-all duration-300">
-                  <svg className="w-6 h-6 text-indigo-300" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029H23.726zm-7.785-4h4.44c-.185-1.383-1.086-1.92-2.295-1.92-1.385 0-2.098.694-2.145 1.92zm-2.965-6.772c-.2-.752-.75-1.356-1.615-1.628-1.086-.343-2.527-.343-3.771-.343H0v16h8.029c1.26 0 2.76-.087 3.913-.557 1.29-.528 2.073-1.675 2.073-3.205 0-1.485-.75-2.768-2.146-3.299.985-.616 1.524-1.585 1.524-2.76 0-.617-.099-1.163-.312-1.608zm-4.382 8.45H3.743v-2.906h4.851c.838 0 1.626.38 1.626 1.453-.001 1.072-.789 1.453-1.627 1.453zm-.211-5.49H3.743V7.394h4.64c.784 0 1.544.332 1.544 1.29 0 .957-.76 1.294-1.544 1.294z"/>
-                  </svg>
-                </div>
-                {/* Text */}
-                <div className="space-y-1.5">
-                  <p className="font-heading text-base font-semibold text-white tracking-tight">Behance</p>
-                  <p className="font-mono text-[10px] uppercase tracking-widest text-white/35">See my work</p>
-                </div>
-                {/* Hover action tag */}
-                <span className="inline-flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-widest text-indigo-400/70 border border-indigo-500/20 rounded-full px-3 py-1 bg-indigo-500/[0.06] opacity-0 group-hover:opacity-100 transition-opacity duration-300 select-none">
-                  View portfolio
-                  <ArrowUpRight className="w-2.5 h-2.5" />
-                </span>
-              </a>
+            return (
+              <ScrollReveal delay={0.15}>
+                <div className="mt-20 grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
+                  {/* Email card */}
+                  <a
+                    href={`mailto:${CONTACT_DATA.email}`}
+                    onMouseMove={(e) => handleMouseMove(e, "email")}
+                    onMouseLeave={() => handleMouseLeave("email")}
+                    style={emailStyle}
+                    className="bg-[#0e0e11] border border-white/[0.04] rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:bg-[#111114] group card--border-glow bento-section relative overflow-hidden text-left"
+                  >
+                    <div>
+                      {/* Top Row: Icon & Arrow */}
+                      <div className="flex justify-between items-start">
+                        <div className="text-white shrink-0 w-12 h-12 flex items-center justify-center bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 group-hover:border-violet-500/20 transition-all duration-300 group-hover:bg-violet-500/5 group-hover:scale-[1.05]">
+                          <svg className="w-6 h-6 text-violet-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                            <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                          </svg>
+                        </div>
+                        <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-violet-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                      </div>
 
-            </div>
-          </ScrollReveal>
+                      {/* Title */}
+                      <h3 className="font-heading text-lg font-semibold text-white tracking-tight mt-8">
+                        Email
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-white/40 text-xs font-light leading-relaxed mt-2.5 font-body">
+                        Send a message directly to my inbox. I typically reply within 24 hours.
+                      </p>
+                    </div>
+
+                    {/* Footer link trigger */}
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-violet-400 group-hover:text-violet-300 transition-colors duration-200 mt-8 block select-none">
+                      Open Channel
+                    </span>
+                  </a>
+
+                  {/* LinkedIn card */}
+                  <a
+                    href={CONTACT_DATA.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseMove={(e) => handleMouseMove(e, "linkedin")}
+                    onMouseLeave={() => handleMouseLeave("linkedin")}
+                    style={linkedinStyle}
+                    className="bg-[#0e0e11] border border-white/[0.04] rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:bg-[#111114] group card--border-glow bento-section relative overflow-hidden text-left"
+                  >
+                    <div>
+                      {/* Top Row: Icon & Arrow */}
+                      <div className="flex justify-between items-start">
+                        <div className="text-white shrink-0 w-12 h-12 flex items-center justify-center bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 group-hover:border-sky-500/20 transition-all duration-300 group-hover:bg-sky-500/5 group-hover:scale-[1.05]">
+                          <svg className="w-6 h-6 text-sky-300" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                          </svg>
+                        </div>
+                        <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-sky-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="font-heading text-lg font-semibold text-white tracking-tight mt-8">
+                        LinkedIn
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-white/40 text-xs font-light leading-relaxed mt-2.5 font-body">
+                        Connect with me for professional design updates, sharing, and networking.
+                      </p>
+                    </div>
+
+                    {/* Footer link trigger */}
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-sky-400 group-hover:text-sky-300 transition-colors duration-200 mt-8 block select-none">
+                      View Profile
+                    </span>
+                  </a>
+
+                  {/* Behance card */}
+                  <a
+                    href={CONTACT_DATA.behance}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseMove={(e) => handleMouseMove(e, "behance")}
+                    onMouseLeave={() => handleMouseLeave("behance")}
+                    style={behanceStyle}
+                    className="bg-[#0e0e11] border border-white/[0.04] rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:bg-[#111114] group card--border-glow bento-section relative overflow-hidden text-left"
+                  >
+                    <div>
+                      {/* Top Row: Icon & Arrow */}
+                      <div className="flex justify-between items-start">
+                        <div className="text-white shrink-0 w-12 h-12 flex items-center justify-center bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 group-hover:border-indigo-500/20 transition-all duration-300 group-hover:bg-indigo-500/5 group-hover:scale-[1.05]">
+                          <svg className="w-6 h-6 text-indigo-300" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029H23.726zm-7.785-4h4.44c-.185-1.383-1.086-1.92-2.295-1.92-1.385 0-2.098.694-2.145 1.92zm-2.965-6.772c-.2-.752-.75-1.356-1.615-1.628-1.086-.343-2.527-.343-3.771-.343H0v16h8.029c1.26 0 2.76-.087 3.913-.557 1.29-.528 2.073-1.675 2.073-3.205 0-1.485-.75-2.768-2.146-3.299.985-.616 1.524-1.585 1.524-2.76 0-.617-.099-1.163-.312-1.608zm-4.382 8.45H3.743v-2.906h4.851c.838 0 1.626.38 1.626 1.453-.001 1.072-.789 1.453-1.627 1.453zm-.211-5.49H3.743V7.394h4.64c.784 0 1.544.332 1.544 1.29 0 .957-.76 1.294-1.544 1.294z"/>
+                          </svg>
+                        </div>
+                        <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="font-heading text-lg font-semibold text-white tracking-tight mt-8">
+                        Behance
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-white/40 text-xs font-light leading-relaxed mt-2.5 font-body">
+                        Explore full visual case studies, UI templates, and component design patterns.
+                      </p>
+                    </div>
+
+                    {/* Footer link trigger */}
+                    <span className="font-mono text-[9px] uppercase tracking-widest text-indigo-400 group-hover:text-indigo-300 transition-colors duration-200 mt-8 block select-none">
+                      See My Work
+                    </span>
+                  </a>
+                </div>
+              </ScrollReveal>
+            );
+          })()}
         </div>
       </section>
 

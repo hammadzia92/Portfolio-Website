@@ -855,7 +855,7 @@ export default function GamesPage() {
           <div className="flex items-center gap-4">
             <a
               href="/?mode=portfolio"
-              className="group flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-full px-4 py-2 transition-all duration-200 bg-white/[0.02]"
+              className="group flex items-center gap-2 font-heading text-[10px] uppercase tracking-widest text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-full px-4 py-2 transition-all duration-200 bg-white/[0.02]"
             >
               <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-0.5 text-white/80" />
               Back to Portfolio
@@ -870,7 +870,7 @@ export default function GamesPage() {
             href={CONTACT_DATA.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white text-black font-semibold font-mono text-[10px] uppercase tracking-widest rounded-full px-5.5 py-2 hover:bg-white/90 hover:shadow-[0_0_15px_rgba(255,255,255,0.25)] transition-all duration-200 select-none"
+            className="bg-white text-black font-semibold font-heading text-[10px] uppercase tracking-widest rounded-full px-5.5 py-2 hover:bg-white/90 hover:shadow-[0_0_15px_rgba(255,255,255,0.25)] transition-all duration-200 select-none"
           >
             Resume
           </a>
