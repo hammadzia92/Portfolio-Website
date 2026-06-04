@@ -764,211 +764,418 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
         </div>
       </section>
 
-      {/* â”€â”€â”€ Case Study Index Section â”€â”€â”€ */}
-      <section id="work" className="max-w-[1320px] mx-auto px-6 py-20 border-t border-white/[0.04]">
-        <div className="space-y-20">
+      {/* ─── Case Study Index Section ─── */}
+      <section id="work" className="relative py-28 md:py-36 overflow-hidden">
+        {/* Background ambient glow orbs */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full bg-gradient-to-b from-violet-600/[0.04] via-indigo-500/[0.02] to-transparent blur-[120px]" />
+          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-sky-600/[0.03] blur-[100px]" />
+          <div className="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full bg-violet-500/[0.03] blur-[100px]" />
+        </div>
 
-          {/* Section Header */}
-          <ScrollReveal>
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
-              <div className="space-y-4">
-                <span className="font-mono text-xs font-bold text-white/40 uppercase tracking-[0.25em] select-none block">
-                  case study archive
-                </span>
-                <h2 className="font-heading text-5xl sm:text-6xl font-light text-white tracking-tight leading-[1.08] max-w-lg">
-                  Selected work.
-                </h2>
-              </div>
-              <p className="text-white/40 text-sm font-light leading-relaxed font-body max-w-xs lg:text-right">
-                {PROJECTS.length} projects · UI/UX Design & Product Design
-              </p>
-            </div>
-          </ScrollReveal>
+        <div className="max-w-[1320px] mx-auto px-6 relative z-10">
+          <div className="space-y-16 md:space-y-24">
 
-          {/* Project Rows */}
-          <div className="space-y-0">
-            {PROJECTS.map((project, index) => {
-              const isOpen = activeProjectId === project.id;
-              const metric = projectMetrics[project.id] || { value: "", label: "" };
-              
-              return (
-                <ScrollReveal key={project.id} delay={index * 0.04}>
-                  <div
-                    onMouseEnter={() => handleProjectMouseEnter(project.id)}
-                    onMouseLeave={handleProjectMouseLeave}
-                    className={`border-t border-white/[0.06] transition-all duration-500 ${isOpen ? "border-white/[0.12]" : ""}`}
-                  >
-                    {/* Main clickable row */}
-                    <button
-                      onClick={() => setActiveProjectId(isOpen ? null : project.id)}
-                      className="w-full text-left py-8 lg:py-10 flex items-center gap-5 lg:gap-8 group cursor-pointer select-none"
-                    >
-                      {/* Index number */}
-                      <span className={`font-mono text-xs tabular-nums shrink-0 w-6 transition-colors duration-300 ${isOpen ? "text-white/50" : "text-white/20 group-hover:text-white/35"}`}>
-                        {String(index + 1).padStart(2, "0")}
+            {/* ── Premium Section Header ── */}
+            <ScrollReveal>
+              <div className="relative">
+                {/* Decorative large number watermark */}
+                <div className="absolute -top-12 -left-4 font-heading text-[180px] sm:text-[240px] font-black leading-none text-white/[0.015] select-none pointer-events-none tracking-tighter" aria-hidden="true">
+                  {String(PROJECTS.length).padStart(2, "0")}
+                </div>
+
+                <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 lg:gap-16">
+                  <div className="space-y-5">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-[1px] bg-gradient-to-r from-violet-500 to-transparent" />
+                      <span className="font-mono text-[10px] font-bold text-violet-400/70 uppercase tracking-[0.3em] select-none">
+                        case studies
                       </span>
-
-                      {/* Logo - rounded square */}
-                      <div className="shrink-0">
-                        {project.id === "ai-fiesta" ? (
-                          <div className="w-11 h-11 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center">
-                            <img src="/ai-fiesta.png" alt="AI Fiesta" className="w-full h-full object-cover" />
-                          </div>
-                        ) : project.id === "tagmango" ? (
-                          <div className="w-11 h-11 rounded-xl overflow-hidden border border-white/10 bg-white flex items-center justify-center">
-                            <img src="/unnamed.png" alt="TagMango logo" className="w-full h-full object-contain" />
-                          </div>
-                        ) : project.id === "asseteye" ? (
-                          <div className="w-11 h-11 rounded-xl overflow-hidden border border-white/10 bg-white/[0.02] flex items-center justify-center p-0.5">
-                            <svg viewBox="0 0 100 100" className="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
-                              <defs>
-                                <linearGradient id="asseteye-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-                                  <stop offset="0%" stopColor="#0b1a14" />
-                                  <stop offset="100%" stopColor="#1e3a2f" />
-                                </linearGradient>
-                              </defs>
-                              <circle cx="50" cy="50" r="50" fill="url(#asseteye-grad)" />
-                              <g fill="none" stroke="#76BA43" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
-                                <circle cx="50" cy="50" r="32" strokeWidth="4" />
-                                <path d="M50 18 L34 35" /><path d="M77.7 34 L62 18" />
-                                <path d="M77.7 66 L77.7 46" /><path d="M50 82 L66 65" />
-                                <path d="M22.3 66 L38 82" /><path d="M22.3 34 L22.3 54" />
-                                <polygon points="50,38 60.4,44 60.4,56 50,62 39.6,56 39.6,44" fill="#0b1a14" />
-                              </g>
-                            </svg>
-                          </div>
-                        ) : project.id === "nuros-ai" ? (
-                          <div className="w-11 h-11 rounded-xl overflow-hidden border border-white/10 bg-white flex items-center justify-center">
-                            <img src="/Frame 2087327899.png" alt="Nuros AI logo" className="w-full h-full object-contain" />
-                          </div>
-                        ) : project.id === "posture-pal" ? (
-                          <div className="w-11 h-11 rounded-xl overflow-hidden border border-white/10 bg-white/[0.02] flex items-center justify-center p-0.5">
-                            <svg viewBox="0 0 100 100" className="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
-                              <defs>
-                                <linearGradient id="posture-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-                                  <stop offset="0%" stopColor="#1a0a14" /><stop offset="100%" stopColor="#db2777" />
-                                </linearGradient>
-                              </defs>
-                              <circle cx="50" cy="50" r="50" fill="url(#posture-grad)" />
-                              <g fill="none" stroke="white" strokeWidth="3" strokeLinecap="round">
-                                <circle cx="50" cy="24" r="5" fill="white" stroke="none" />
-                                <path d="M50 34 Q45 42 50 50" /><path d="M50 50 Q55 58 50 66" />
-                                <path d="M50 66 Q45 72 50 78" />
-                                <path d="M28 45 A25 25 0 0 1 72 45" stroke="#f472b6" strokeWidth="2" strokeDasharray="4,4" />
-                                <path d="M28 55 A25 25 0 0 0 72 55" stroke="#f472b6" strokeWidth="2" strokeDasharray="4,4" />
-                              </g>
-                            </svg>
-                          </div>
-                        ) : project.id === "framix" ? (
-                          <div className="w-11 h-11 rounded-xl overflow-hidden border border-white/10 bg-white/[0.02] flex items-center justify-center p-0.5">
-                            <svg viewBox="0 0 100 100" className="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
-                              <defs>
-                                <linearGradient id="framix-grad" x1="0%" y1="100%" x2="100%" y2="0%">
-                                  <stop offset="0%" stopColor="#15102a" /><stop offset="100%" stopColor="#7c3aed" />
-                                </linearGradient>
-                              </defs>
-                              <circle cx="50" cy="50" r="50" fill="url(#framix-grad)" />
-                              <g fill="none" stroke="white" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round">
-                                <rect x="25" y="25" width="50" height="50" rx="6" strokeWidth="3" />
-                                <line x1="25" y1="42" x2="75" y2="42" strokeWidth="2" strokeDasharray="1,2" />
-                                <rect x="33" y="50" width="14" height="14" rx="2" stroke="#a78bfa" strokeWidth="2.5" />
-                                <line x1="54" y1="53" x2="67" y2="53" strokeWidth="2" />
-                                <line x1="54" y1="61" x2="63" y2="61" strokeWidth="2" />
-                              </g>
-                            </svg>
-                          </div>
-                        ) : (
-                          <div className="w-11 h-11 rounded-xl border border-white/10 bg-white/[0.02] flex items-center justify-center font-mono text-xs font-bold text-white/30">
-                            {project.title.charAt(0)}
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Title + role tag */}
-                      <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 min-w-0">
-                        <h3 className={`font-heading text-2xl sm:text-3xl lg:text-4xl tracking-tight transition-all duration-300 ${isOpen ? "text-white font-normal" : "text-white/65 font-light group-hover:text-white"}`}>
-                          {project.title}
-                        </h3>
-                        <span className="font-mono text-[9px] uppercase tracking-widest text-white/25 border border-white/[0.07] rounded-full px-2.5 py-1 select-none shrink-0 self-start sm:self-auto">
-                          {project.role}
-                        </span>
-                      </div>
-
-                      {/* Right: timeline + expand icon */}
-                      <div className="shrink-0 flex items-center gap-4">
-                        <span className="hidden md:block font-mono text-xs text-white/20 select-none">{project.timeline}</span>
-                        <div className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-300 ${isOpen ? "border-white/30 bg-white/10 rotate-45" : "border-white/10 group-hover:border-white/25"}`}>
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <line x1="6" y1="1" x2="6" y2="11" stroke="white" strokeOpacity={isOpen ? "0.7" : "0.3"} strokeWidth="1.5" strokeLinecap="round"/>
-                            <line x1="1" y1="6" x2="11" y2="6" stroke="white" strokeOpacity={isOpen ? "0.7" : "0.3"} strokeWidth="1.5" strokeLinecap="round"/>
-                          </svg>
-                        </div>
-                      </div>
-                    </button>
-
-                    {/* Expand Panel */}
-                    <AnimatePresence initial={false}>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                          className="overflow-hidden"
-                        >
-                          <div className="pb-12 space-y-10 border-t border-white/[0.04] pt-8 pl-0 lg:pl-24">
-
-                            {/* Brief + Metric */}
-                            <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-8 items-start">
-                              <div className="space-y-3 max-w-2xl">
-                                <span className="font-mono text-[10px] text-white/25 uppercase tracking-widest block select-none">Project Brief</span>
-                                <p className="text-white/80 text-lg md:text-xl font-light leading-relaxed font-body">
-                                  {project.tagline}
-                                </p>
-                              </div>
-                              {metric.value && (
-                                <div className="shrink-0 bg-white/[0.02] border border-white/[0.06] rounded-2xl p-6 min-w-[160px] text-center">
-                                  <span className="font-mono text-[9px] text-[#8cff2e] uppercase tracking-widest font-semibold block mb-2 select-none">Key Highlight</span>
-                                  <div className="font-heading text-4xl font-black text-white tracking-tight leading-none select-none">{metric.value}</div>
-                                  <p className="font-mono text-[9px] tracking-widest uppercase text-white/35 mt-2 select-none">{metric.label}</p>
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Deliverables */}
-                            <div className="space-y-4 border-t border-white/[0.04] pt-8">
-                              <span className="font-mono text-[10px] text-white/25 uppercase tracking-widest block select-none">Core Deliverables</span>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-3">
-                                {project.highlights.map((hl, hlIdx) => (
-                                  <div key={hlIdx} className="flex items-start gap-3">
-                                    <div className="w-1 h-1 rounded-full bg-white/30 mt-2.5 shrink-0" />
-                                    <p className="text-white/55 text-sm font-light leading-relaxed font-body">{hl}</p>
-                                  </div>
-                                ))}
-                              </div>
-                            </div>
-
-                            {/* Metadata Footer */}
-                            <div className="flex flex-wrap gap-x-8 gap-y-2 pt-6 border-t border-white/[0.04] font-mono text-[10px] uppercase tracking-widest text-white/30">
-                              <span>Role <strong className="text-white/65 font-semibold ml-2">{project.role}</strong></span>
-                              <span>Client <strong className="text-white/65 font-semibold ml-2">{project.company}</strong></span>
-                              <span>Timeline <strong className="text-white/65 font-semibold ml-2">{project.timeline}</strong></span>
-                            </div>
-
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    </div>
+                    <h2 className="font-heading text-5xl sm:text-6xl md:text-7xl font-light text-white tracking-tight leading-[1.04]">
+                      Selected{" "}
+                      <span
+                        className="relative inline-block"
+                        style={{
+                          background: "linear-gradient(135deg, #a78bfa 0%, #818cf8 40%, #38bdf8 100%)",
+                          WebkitBackgroundClip: "text",
+                          WebkitTextFillColor: "transparent",
+                          backgroundClip: "text",
+                        }}
+                      >
+                        work
+                      </span>
+                      <span className="text-white/20">.</span>
+                    </h2>
+                    <p className="text-white/35 text-base font-light leading-relaxed font-body max-w-md">
+                      A curated selection of projects where design drove real product outcomes.
+                    </p>
                   </div>
-                </ScrollReveal>
-              );
-            })}
-            <div className="border-t border-white/[0.06]" />
+
+                  {/* Right side — project count pill */}
+                  <div className="flex items-center gap-5 lg:pb-2">
+                    <div className="flex items-center gap-3 bg-white/[0.03] border border-white/[0.07] rounded-full px-5 py-2.5 select-none backdrop-blur-sm">
+                      <span className="font-heading text-xl font-bold bg-gradient-to-r from-violet-400 to-sky-400 bg-clip-text text-transparent">
+                        {String(PROJECTS.length).padStart(2, "0")}
+                      </span>
+                      <div className="w-[1px] h-4 bg-white/[0.08]" />
+                      <span className="font-mono text-[10px] uppercase tracking-widest text-white/35">
+                        Projects
+                      </span>
+                    </div>
+                    <div className="hidden md:flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-violet-400/50" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-400/50" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-sky-400/50" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Divider line */}
+                <div className="mt-12 h-[1px] bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-transparent" />
+              </div>
+            </ScrollReveal>
+
+            {/* ── Project Rows ── */}
+            <div className="space-y-0">
+              {PROJECTS.map((project, index) => {
+                const isOpen = activeProjectId === project.id;
+                const isHovered = activeProjectId === project.id;
+                const metric = projectMetrics[project.id] || { value: "", label: "" };
+
+                return (
+                  <ScrollReveal key={project.id} delay={index * 0.06}>
+                    <div
+                      onMouseEnter={() => handleProjectMouseEnter(project.id)}
+                      onMouseLeave={handleProjectMouseLeave}
+                      className="relative group"
+                    >
+                      {/* Background glow on hover - uses project accent color */}
+                      <div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none rounded-2xl -mx-3"
+                        style={{
+                          background: `radial-gradient(ellipse 600px 200px at 15% 50%, ${project.accentColor}08 0%, transparent 70%)`,
+                        }}
+                      />
+
+                      {/* Top border with gradient */}
+                      <div className="relative">
+                        <div className="absolute inset-x-0 top-0 h-[1px] bg-white/[0.06]" />
+                        {/* Animated accent line that appears on hover */}
+                        <motion.div
+                          className="absolute top-0 left-0 h-[1px]"
+                          initial={{ width: "0%" }}
+                          animate={{ width: isHovered ? "100%" : "0%" }}
+                          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+                          style={{
+                            background: `linear-gradient(90deg, ${project.accentColor}60, ${project.accentColor}20, transparent)`,
+                          }}
+                        />
+                      </div>
+
+                      {/* Main clickable row */}
+                      <button
+                        onClick={() => setActiveProjectId(isOpen ? null : project.id)}
+                        className="relative w-full text-left py-8 lg:py-10 flex items-center gap-5 lg:gap-8 cursor-pointer select-none z-10"
+                      >
+                        {/* Left accent bar */}
+                        <div className="hidden lg:flex flex-col items-center gap-3 shrink-0 w-8">
+                          <span className={`font-mono text-[11px] tabular-nums transition-all duration-500 ${isOpen ? "text-white/60" : "text-white/20 group-hover:text-white/40"}`}>
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <motion.div
+                            className="w-[2px] rounded-full"
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{
+                              height: isHovered ? 28 : 0,
+                              opacity: isHovered ? 1 : 0,
+                            }}
+                            transition={{ duration: 0.4, ease: "easeOut" }}
+                            style={{ backgroundColor: project.accentColor }}
+                          />
+                        </div>
+
+                        {/* Mobile index number */}
+                        <span className={`lg:hidden font-mono text-xs tabular-nums shrink-0 w-6 transition-colors duration-300 ${isOpen ? "text-white/50" : "text-white/20"}`}>
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+
+                        {/* Logo - premium rounded square with glow */}
+                        <div className="shrink-0 relative">
+                          {/* Glow behind logo on hover */}
+                          <div
+                            className="absolute -inset-2 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg pointer-events-none"
+                            style={{ backgroundColor: `${project.accentColor}15` }}
+                          />
+                          <div className="relative">
+                            {project.id === "ai-fiesta" ? (
+                              <div className={`w-12 h-12 rounded-xl overflow-hidden border transition-all duration-500 flex items-center justify-center ${isOpen ? "border-white/20 shadow-lg" : "border-white/[0.08] group-hover:border-white/15"}`}>
+                                <img src="/ai-fiesta.png" alt="AI Fiesta" className="w-full h-full object-cover" />
+                              </div>
+                            ) : project.id === "tagmango" ? (
+                              <div className={`w-12 h-12 rounded-xl overflow-hidden border bg-white transition-all duration-500 flex items-center justify-center ${isOpen ? "border-white/20 shadow-lg" : "border-white/[0.08] group-hover:border-white/15"}`}>
+                                <img src="/unnamed.png" alt="TagMango logo" className="w-full h-full object-contain" />
+                              </div>
+                            ) : project.id === "asseteye" ? (
+                              <div className={`w-12 h-12 rounded-xl overflow-hidden border bg-white/[0.02] transition-all duration-500 flex items-center justify-center p-0.5 ${isOpen ? "border-white/20 shadow-lg" : "border-white/[0.08] group-hover:border-white/15"}`}>
+                                <svg viewBox="0 0 100 100" className="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+                                  <defs>
+                                    <linearGradient id={`asseteye-grad-${index}`} x1="0%" y1="100%" x2="100%" y2="0%">
+                                      <stop offset="0%" stopColor="#0b1a14" />
+                                      <stop offset="100%" stopColor="#1e3a2f" />
+                                    </linearGradient>
+                                  </defs>
+                                  <circle cx="50" cy="50" r="50" fill={`url(#asseteye-grad-${index})`} />
+                                  <g fill="none" stroke="#76BA43" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <circle cx="50" cy="50" r="32" strokeWidth="4" />
+                                    <path d="M50 18 L34 35" /><path d="M77.7 34 L62 18" />
+                                    <path d="M77.7 66 L77.7 46" /><path d="M50 82 L66 65" />
+                                    <path d="M22.3 66 L38 82" /><path d="M22.3 34 L22.3 54" />
+                                    <polygon points="50,38 60.4,44 60.4,56 50,62 39.6,56 39.6,44" fill="#0b1a14" />
+                                  </g>
+                                </svg>
+                              </div>
+                            ) : project.id === "nuros-ai" ? (
+                              <div className={`w-12 h-12 rounded-xl overflow-hidden border bg-white transition-all duration-500 flex items-center justify-center ${isOpen ? "border-white/20 shadow-lg" : "border-white/[0.08] group-hover:border-white/15"}`}>
+                                <img src="/Frame 2087327899.png" alt="Nuros AI logo" className="w-full h-full object-contain" />
+                              </div>
+                            ) : project.id === "posture-pal" ? (
+                              <div className={`w-12 h-12 rounded-xl overflow-hidden border bg-white/[0.02] transition-all duration-500 flex items-center justify-center p-0.5 ${isOpen ? "border-white/20 shadow-lg" : "border-white/[0.08] group-hover:border-white/15"}`}>
+                                <svg viewBox="0 0 100 100" className="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+                                  <defs>
+                                    <linearGradient id={`posture-grad-${index}`} x1="0%" y1="100%" x2="100%" y2="0%">
+                                      <stop offset="0%" stopColor="#1a0a14" /><stop offset="100%" stopColor="#db2777" />
+                                    </linearGradient>
+                                  </defs>
+                                  <circle cx="50" cy="50" r="50" fill={`url(#posture-grad-${index})`} />
+                                  <g fill="none" stroke="white" strokeWidth="3" strokeLinecap="round">
+                                    <circle cx="50" cy="24" r="5" fill="white" stroke="none" />
+                                    <path d="M50 34 Q45 42 50 50" /><path d="M50 50 Q55 58 50 66" />
+                                    <path d="M50 66 Q45 72 50 78" />
+                                    <path d="M28 45 A25 25 0 0 1 72 45" stroke="#f472b6" strokeWidth="2" strokeDasharray="4,4" />
+                                    <path d="M28 55 A25 25 0 0 0 72 55" stroke="#f472b6" strokeWidth="2" strokeDasharray="4,4" />
+                                  </g>
+                                </svg>
+                              </div>
+                            ) : project.id === "framix" ? (
+                              <div className={`w-12 h-12 rounded-xl overflow-hidden border bg-white/[0.02] transition-all duration-500 flex items-center justify-center p-0.5 ${isOpen ? "border-white/20 shadow-lg" : "border-white/[0.08] group-hover:border-white/15"}`}>
+                                <svg viewBox="0 0 100 100" className="w-full h-full select-none" xmlns="http://www.w3.org/2000/svg">
+                                  <defs>
+                                    <linearGradient id={`framix-grad-${index}`} x1="0%" y1="100%" x2="100%" y2="0%">
+                                      <stop offset="0%" stopColor="#15102a" /><stop offset="100%" stopColor="#7c3aed" />
+                                    </linearGradient>
+                                  </defs>
+                                  <circle cx="50" cy="50" r="50" fill={`url(#framix-grad-${index})`} />
+                                  <g fill="none" stroke="white" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round">
+                                    <rect x="25" y="25" width="50" height="50" rx="6" strokeWidth="3" />
+                                    <line x1="25" y1="42" x2="75" y2="42" strokeWidth="2" strokeDasharray="1,2" />
+                                    <rect x="33" y="50" width="14" height="14" rx="2" stroke="#a78bfa" strokeWidth="2.5" />
+                                    <line x1="54" y1="53" x2="67" y2="53" strokeWidth="2" />
+                                    <line x1="54" y1="61" x2="63" y2="61" strokeWidth="2" />
+                                  </g>
+                                </svg>
+                              </div>
+                            ) : (
+                              <div className={`w-12 h-12 rounded-xl border bg-white/[0.02] flex items-center justify-center font-mono text-sm font-bold text-white/30 transition-all duration-500 ${isOpen ? "border-white/20" : "border-white/[0.08] group-hover:border-white/15"}`}>
+                                {project.title.charAt(0)}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Title + role tag */}
+                        <div className="flex-1 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 min-w-0">
+                          <h3
+                            className={`font-heading text-2xl sm:text-3xl lg:text-[2.5rem] tracking-tight transition-all duration-500 ${isOpen ? "text-white font-normal" : "text-white/60 font-light group-hover:text-white/95"}`}
+                          >
+                            {project.title}
+                          </h3>
+                          <span
+                            className="font-mono text-[9px] uppercase tracking-widest rounded-full px-3 py-1.5 select-none shrink-0 self-start sm:self-auto transition-all duration-500"
+                            style={{
+                              color: isHovered ? `${project.accentColor}cc` : "rgba(255,255,255,0.22)",
+                              borderColor: isHovered ? `${project.accentColor}30` : "rgba(255,255,255,0.06)",
+                              backgroundColor: isHovered ? `${project.accentColor}08` : "transparent",
+                              borderWidth: "1px",
+                              borderStyle: "solid",
+                            }}
+                          >
+                            {project.role}
+                          </span>
+                        </div>
+
+                        {/* Right: timeline + expand icon */}
+                        <div className="shrink-0 flex items-center gap-4 lg:gap-6">
+                          <span className="hidden md:block font-mono text-[11px] text-white/20 group-hover:text-white/35 select-none transition-colors duration-300">{project.timeline}</span>
+                          <div
+                            className={`w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-500 ${isOpen ? "rotate-45 scale-110" : "group-hover:scale-105"}`}
+                            style={{
+                              borderColor: isHovered ? `${project.accentColor}40` : "rgba(255,255,255,0.08)",
+                              backgroundColor: isOpen ? `${project.accentColor}15` : "transparent",
+                            }}
+                          >
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                              <line x1="6" y1="1" x2="6" y2="11" stroke={isHovered ? project.accentColor : "white"} strokeOpacity={isOpen ? "0.8" : "0.3"} strokeWidth="1.5" strokeLinecap="round"/>
+                              <line x1="1" y1="6" x2="11" y2="6" stroke={isHovered ? project.accentColor : "white"} strokeOpacity={isOpen ? "0.8" : "0.3"} strokeWidth="1.5" strokeLinecap="round"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </button>
+
+                      {/* ── Premium Expand Panel ── */}
+                      <AnimatePresence initial={false}>
+                        {isOpen && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+                            className="overflow-hidden relative z-10"
+                          >
+                            <div className="relative pb-14">
+                              {/* Top gradient accent strip */}
+                              <div
+                                className="h-[2px] w-full mb-10"
+                                style={{
+                                  background: `linear-gradient(90deg, ${project.accentColor}50, ${project.accentColor}15, transparent 80%)`,
+                                }}
+                              />
+
+                              {/* Background glow inside panel */}
+                              <div
+                                className="absolute top-0 left-0 w-[400px] h-[300px] rounded-full blur-[100px] pointer-events-none opacity-30"
+                                style={{ backgroundColor: `${project.accentColor}10` }}
+                              />
+
+                              <div className="relative space-y-10 pl-0 lg:pl-[72px]">
+
+                                {/* Brief + Metric Row */}
+                                <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 items-start">
+                                  <div className="space-y-4 max-w-2xl">
+                                    <div className="flex items-center gap-2">
+                                      <div
+                                        className="w-1.5 h-1.5 rounded-full"
+                                        style={{ backgroundColor: project.accentColor }}
+                                      />
+                                      <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest select-none">Project Brief</span>
+                                    </div>
+                                    <p className="text-white/80 text-lg md:text-xl font-light leading-relaxed font-body">
+                                      {project.tagline}
+                                    </p>
+                                  </div>
+                                  {metric.value && (
+                                    <div
+                                      className="shrink-0 relative rounded-2xl p-7 min-w-[180px] text-center overflow-hidden border"
+                                      style={{
+                                        borderColor: `${project.accentColor}15`,
+                                        backgroundColor: `${project.accentBg}80`,
+                                      }}
+                                    >
+                                      {/* Subtle inner glow */}
+                                      <div
+                                        className="absolute inset-0 opacity-20 pointer-events-none"
+                                        style={{
+                                          background: `radial-gradient(circle at 50% 0%, ${project.accentColor}30 0%, transparent 70%)`,
+                                        }}
+                                      />
+                                      <div className="relative">
+                                        <span
+                                          className="font-mono text-[9px] uppercase tracking-widest font-semibold block mb-3 select-none"
+                                          style={{ color: project.accentColor }}
+                                        >
+                                          Key Metric
+                                        </span>
+                                        <div
+                                          className="font-heading text-4xl md:text-5xl font-black tracking-tight leading-none select-none"
+                                          style={{
+                                            background: `linear-gradient(180deg, white 30%, ${project.accentColor}90 100%)`,
+                                            WebkitBackgroundClip: "text",
+                                            WebkitTextFillColor: "transparent",
+                                            backgroundClip: "text",
+                                          }}
+                                        >
+                                          {metric.value}
+                                        </div>
+                                        <p className="font-mono text-[8px] tracking-widest uppercase text-white/30 mt-2.5 select-none leading-snug max-w-[140px] mx-auto">{metric.label}</p>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+
+                                {/* Deliverables - Premium Cards */}
+                                <div className="space-y-5">
+                                  <div className="flex items-center gap-2">
+                                    <div
+                                      className="w-1.5 h-1.5 rounded-full"
+                                      style={{ backgroundColor: project.accentColor }}
+                                    />
+                                    <span className="font-mono text-[10px] text-white/30 uppercase tracking-widest select-none">Core Deliverables</span>
+                                  </div>
+                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    {project.highlights.map((hl, hlIdx) => (
+                                      <div
+                                        key={hlIdx}
+                                        className="relative rounded-xl border border-white/[0.05] bg-white/[0.02] p-5 hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-400 group/card overflow-hidden"
+                                      >
+                                        {/* Card number */}
+                                        <span
+                                          className="font-mono text-[10px] font-bold block mb-3 select-none"
+                                          style={{ color: `${project.accentColor}80` }}
+                                        >
+                                          {String(hlIdx + 1).padStart(2, "0")}
+                                        </span>
+                                        <p className="text-white/55 text-sm font-light leading-relaxed font-body group-hover/card:text-white/70 transition-colors duration-300">{hl}</p>
+                                        {/* Bottom accent line on hover */}
+                                        <div
+                                          className="absolute bottom-0 left-0 w-0 group-hover/card:w-full h-[1px] transition-all duration-500"
+                                          style={{ background: `linear-gradient(90deg, ${project.accentColor}40, transparent)` }}
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                {/* Metadata Footer - Premium */}
+                                <div className="relative pt-6">
+                                  <div
+                                    className="absolute top-0 left-0 right-0 h-[1px]"
+                                    style={{
+                                      background: `linear-gradient(90deg, ${project.accentColor}15, rgba(255,255,255,0.04), transparent)`,
+                                    }}
+                                  />
+                                  <div className="flex flex-wrap gap-x-10 gap-y-3 font-mono text-[10px] uppercase tracking-widest text-white/25">
+                                    <span className="flex items-center gap-2">
+                                      <span className="text-white/15">Role</span>
+                                      <strong className="text-white/60 font-semibold">{project.role}</strong>
+                                    </span>
+                                    <span className="flex items-center gap-2">
+                                      <span className="text-white/15">Client</span>
+                                      <strong className="text-white/60 font-semibold">{project.company}</strong>
+                                    </span>
+                                    <span className="flex items-center gap-2">
+                                      <span className="text-white/15">Timeline</span>
+                                      <strong className="text-white/60 font-semibold">{project.timeline}</strong>
+                                    </span>
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  </ScrollReveal>
+                );
+              })}
+              {/* Bottom border with gradient */}
+              <div className="h-[1px] bg-gradient-to-r from-white/[0.08] via-white/[0.04] to-transparent" />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* â”€â”€â”€ Skills & Toolkit Section â”€â”€â”€ */}
+      {/* ─── Skills & Toolkit Section ─── */}
       <section id="skills" className="max-w-[1320px] mx-auto px-6 py-20 border-t border-white/[0.04]">
         <div className="space-y-16">
           
@@ -1340,76 +1547,88 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
         </div>
       </section>
 
-      {/* ─── Contact Section ─── */}
-      <section id="contact" className="relative overflow-hidden border-t border-white/[0.04]">
+      {/* ─── Contact / CTA Section ─── */}
+      <section id="contact" className="relative overflow-hidden">
 
-        {/* Full-bleed ambient backdrop */}
+        {/* Full-bleed gradient background inspired by reference */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0c] via-[#0d0b14] to-[#0a0a0c]" />
-          {/* Glow orbs */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full opacity-[0.09]"
-            style={{ background: "radial-gradient(ellipse at center, #7c3aed 0%, #2563eb 50%, transparent 70%)" }} />
-          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full opacity-[0.05] blur-[80px]"
-            style={{ background: "#a78bfa" }} />
-          {/* Subtle grid */}
+          {/* Deep blue-purple gradient base */}
+          <div className="absolute inset-0" style={{
+            background: "radial-gradient(ellipse 120% 100% at 50% 40%, #1e1b4b 0%, #1e1b4b 15%, #0c0a20 55%, #0a0a0c 100%)",
+          }} />
+          {/* Left edge fade */}
+          <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-[#0a0a0c]/80 to-transparent" />
+          {/* Right edge fade */}
+          <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-[#0a0a0c]/80 to-transparent" />
+          {/* Central glow orb */}
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[600px] rounded-full opacity-[0.15]"
+            style={{ background: "radial-gradient(ellipse at center, #4338ca 0%, #3b82f6 40%, transparent 70%)" }} />
+          {/* Secondary glow */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] rounded-full opacity-[0.08]"
+            style={{ background: "radial-gradient(ellipse at center, #6366f1 0%, transparent 70%)" }} />
+          {/* Subtle noise/grid overlay */}
           <div className="absolute inset-0 opacity-[0.02]"
-            style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+            style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
         </div>
 
-        <div className="relative z-10 max-w-[1320px] mx-auto px-6 py-28 md:py-36">
+        <div className="relative z-10 max-w-[1320px] mx-auto px-6 pt-28 md:pt-40 pb-20 md:pb-28">
+
+          {/* ── CTA Content ── */}
           <ScrollReveal>
-            <div className="flex flex-col items-center text-center space-y-10 max-w-4xl mx-auto">
+            <div className="flex flex-col items-start text-left max-w-3xl space-y-10">
 
               {/* Availability badge */}
-              <div className="inline-flex items-center gap-2.5 bg-white/[0.04] border border-white/[0.1] rounded-full px-5 py-2.5 select-none">
+              <div className="inline-flex items-center gap-2.5 bg-white/[0.06] border border-white/[0.1] rounded-full px-5 py-2.5 select-none backdrop-blur-sm">
                 <span className="relative flex h-2 w-2 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
                 </span>
                 <span className="font-mono text-[10px] uppercase tracking-widest text-emerald-400/90">
-                  Currently available · Taking on new projects
+                  Available for projects
                 </span>
               </div>
 
-              {/* Headline */}
-              <div className="space-y-5">
-                <h2
-                  className="font-heading font-light text-white leading-[1.06] tracking-tight"
-                  style={{ fontSize: "clamp(2.6rem, 6.5vw, 5rem)" }}
+              {/* Big CTA Heading */}
+              <h2
+                className="font-heading font-light text-white leading-[1.08] tracking-tight"
+                style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)" }}
+              >
+                Ready To Start{" "}
+                <br className="hidden sm:block" />
+                <span
+                  className="relative inline-block"
+                  style={{
+                    background: "linear-gradient(135deg, #a78bfa 0%, #818cf8 30%, #60a5fa 70%, #38bdf8 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
                 >
-                  Have an idea?{" "}
-                  <span
-                    style={{
-                      background: "linear-gradient(135deg, #a78bfa 0%, #818cf8 40%, #38bdf8 100%)",
-                      WebkitBackgroundClip: "text",
-                      WebkitTextFillColor: "transparent",
-                      backgroundClip: "text",
-                    }}
-                  >
-                    Let's ship it.
-                  </span>
-                </h2>
-                <p className="text-white/50 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto font-body">
-                  I design products that convert, scale, and feel premium. Whether it's a{" "}
-                  <span className="text-white/80 font-normal">SaaS dashboard</span>,{" "}
-                  <span className="text-white/80 font-normal">AI interface</span>, or{" "}
-                  <span className="text-white/80 font-normal">design system</span> — I'm your designer.
-                </p>
-              </div>
+                  Something Great?
+                </span>
+              </h2>
 
-              {/* Primary + Secondary CTAs */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
-                {/* Primary: Email CTA */}
+              {/* Subtitle */}
+              <p className="text-white/45 text-lg md:text-xl font-light leading-relaxed font-body max-w-xl">
+                I design products that convert, scale, and feel premium. Whether it's a{" "}
+                <span className="text-white/75 font-normal">SaaS dashboard</span>,{" "}
+                <span className="text-white/75 font-normal">AI interface</span>, or{" "}
+                <span className="text-white/75 font-normal">design system</span> — let's build it together.
+              </p>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap items-center gap-4">
+                {/* Primary: Get In Touch pill */}
                 <a
                   href={`mailto:${CONTACT_DATA.email}`}
-                  onClick={handleCopyEmail}
-                  className="group relative inline-flex items-center gap-3 bg-white text-black font-heading text-[11px] uppercase tracking-widest px-8 py-4 rounded-full font-semibold hover:bg-white/90 transition-all duration-200 select-none overflow-hidden"
+                  className="group inline-flex items-center gap-3 select-none"
                 >
-                  <span className="absolute inset-0 bg-gradient-to-r from-violet-200/20 to-sky-200/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                  </svg>
-                  <span className="relative">{copied ? "✓ Copied!" : `Send me an email`}</span>
+                  <span className="inline-flex items-center gap-2.5 bg-white text-black font-heading text-[11px] uppercase tracking-widest px-7 py-4 rounded-full font-semibold hover:bg-white/90 transition-all duration-200">
+                    Get In Touch
+                  </span>
+                  <span className="w-11 h-11 rounded-full bg-white flex items-center justify-center hover:bg-white/90 transition-all duration-200 group-hover:translate-x-1 group-hover:-translate-y-0.5">
+                    <ArrowUpRight className="w-4 h-4 text-black" />
+                  </span>
                 </a>
 
                 {/* Secondary: Resume */}
@@ -1417,229 +1636,152 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
                   href={CONTACT_DATA.resume}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative inline-flex items-center gap-2.5 border border-white/10 hover:border-white/20 bg-white/[0.02] text-white/80 hover:text-white font-semibold font-heading text-[11px] uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-200 select-none"
+                  className="inline-flex items-center gap-2.5 border border-white/15 hover:border-white/25 bg-white/[0.04] backdrop-blur-sm text-white/80 hover:text-white font-heading text-[11px] uppercase tracking-widest px-7 py-4 rounded-full transition-all duration-200 select-none"
                 >
-                  <svg className="w-3.5 h-3.5 shrink-0 text-white/50 group-hover:text-white transition-colors duration-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/>
-                  </svg>
                   View Resume
-                  <ArrowUpRight className="w-3.5 h-3.5 text-white/50 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-white/50 group-hover:text-white transition-colors" />
                 </a>
               </div>
-
-              {/* Social proof bar */}
-              <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 pt-2">
-                {[
-                  { val: "3+", label: "Years exp." },
-                  { val: "16+", label: "Products shipped" },
-                  { val: "95%", label: "Client satisfaction" },
-                ].map((s, i) => (
-                  <div key={i} className="flex items-center gap-2 select-none">
-                    <span className="font-heading text-white font-semibold text-lg leading-none">{s.val}</span>
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-white/30">{s.label}</span>
-                  </div>
-                ))}
-              </div>
-
             </div>
           </ScrollReveal>
 
-          {/* Contact channel cards — premium icon tiles */}
-          {(() => {
-            const emailGlow = activeGlow["email"] || { x: 0, y: 0, active: false };
-            const emailStyle = {
-              "--glow-x": `${emailGlow.x}px`,
-              "--glow-y": `${emailGlow.y}px`,
-              "--glow-intensity": emailGlow.active ? 1 : 0,
-              "--glow-color": "139, 92, 246",
-            } as React.CSSProperties;
-
-            const linkedinGlow = activeGlow["linkedin"] || { x: 0, y: 0, active: false };
-            const linkedinStyle = {
-              "--glow-x": `${linkedinGlow.x}px`,
-              "--glow-y": `${linkedinGlow.y}px`,
-              "--glow-intensity": linkedinGlow.active ? 1 : 0,
-              "--glow-color": "14, 165, 233",
-            } as React.CSSProperties;
-
-            const behanceGlow = activeGlow["behance"] || { x: 0, y: 0, active: false };
-            const behanceStyle = {
-              "--glow-x": `${behanceGlow.x}px`,
-              "--glow-y": `${behanceGlow.y}px`,
-              "--glow-intensity": behanceGlow.active ? 1 : 0,
-              "--glow-color": "99, 102, 241",
-            } as React.CSSProperties;
-
-            return (
-              <ScrollReveal delay={0.15}>
-                <div className="mt-20 grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
-                  {/* Email card */}
-                  <a
-                    href={`mailto:${CONTACT_DATA.email}`}
-                    onMouseMove={(e) => handleMouseMove(e, "email")}
-                    onMouseLeave={() => handleMouseLeave("email")}
-                    style={emailStyle}
-                    className="bg-[#0e0e11] border border-white/[0.04] rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:bg-[#111114] group card--border-glow bento-section relative overflow-hidden text-left"
-                  >
-                    <div>
-                      {/* Top Row: Icon & Arrow */}
-                      <div className="flex justify-between items-start">
-                        <div className="text-white shrink-0 w-12 h-12 flex items-center justify-center bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 group-hover:border-violet-500/20 transition-all duration-300 group-hover:bg-violet-500/5 group-hover:scale-[1.05]">
-                          <svg className="w-6 h-6 text-violet-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                            <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                          </svg>
-                        </div>
-                        <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-violet-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="font-heading text-lg font-semibold text-white tracking-tight mt-8">
-                        Email
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-white/40 text-xs font-light leading-relaxed mt-2.5 font-body">
-                        Send a message directly to my inbox. I typically reply within 24 hours.
-                      </p>
-                    </div>
-
-                    {/* Footer link trigger */}
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-violet-400 group-hover:text-violet-300 transition-colors duration-200 mt-8 block select-none">
-                      Open Channel
-                    </span>
-                  </a>
-
-                  {/* LinkedIn card */}
-                  <a
-                    href={CONTACT_DATA.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onMouseMove={(e) => handleMouseMove(e, "linkedin")}
-                    onMouseLeave={() => handleMouseLeave("linkedin")}
-                    style={linkedinStyle}
-                    className="bg-[#0e0e11] border border-white/[0.04] rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:bg-[#111114] group card--border-glow bento-section relative overflow-hidden text-left"
-                  >
-                    <div>
-                      {/* Top Row: Icon & Arrow */}
-                      <div className="flex justify-between items-start">
-                        <div className="text-white shrink-0 w-12 h-12 flex items-center justify-center bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 group-hover:border-sky-500/20 transition-all duration-300 group-hover:bg-sky-500/5 group-hover:scale-[1.05]">
-                          <svg className="w-6 h-6 text-sky-300" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                          </svg>
-                        </div>
-                        <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-sky-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="font-heading text-lg font-semibold text-white tracking-tight mt-8">
-                        LinkedIn
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-white/40 text-xs font-light leading-relaxed mt-2.5 font-body">
-                        Connect with me for professional design updates, sharing, and networking.
-                      </p>
-                    </div>
-
-                    {/* Footer link trigger */}
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-sky-400 group-hover:text-sky-300 transition-colors duration-200 mt-8 block select-none">
-                      View Profile
-                    </span>
-                  </a>
-
-                  {/* Behance card */}
-                  <a
-                    href={CONTACT_DATA.behance}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onMouseMove={(e) => handleMouseMove(e, "behance")}
-                    onMouseLeave={() => handleMouseLeave("behance")}
-                    style={behanceStyle}
-                    className="bg-[#0e0e11] border border-white/[0.04] rounded-2xl p-8 flex flex-col justify-between transition-all duration-300 hover:scale-[1.02] hover:bg-[#111114] group card--border-glow bento-section relative overflow-hidden text-left"
-                  >
-                    <div>
-                      {/* Top Row: Icon & Arrow */}
-                      <div className="flex justify-between items-start">
-                        <div className="text-white shrink-0 w-12 h-12 flex items-center justify-center bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 group-hover:border-indigo-500/20 transition-all duration-300 group-hover:bg-indigo-500/5 group-hover:scale-[1.05]">
-                          <svg className="w-6 h-6 text-indigo-300" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029H23.726zm-7.785-4h4.44c-.185-1.383-1.086-1.92-2.295-1.92-1.385 0-2.098.694-2.145 1.92zm-2.965-6.772c-.2-.752-.75-1.356-1.615-1.628-1.086-.343-2.527-.343-3.771-.343H0v16h8.029c1.26 0 2.76-.087 3.913-.557 1.29-.528 2.073-1.675 2.073-3.205 0-1.485-.75-2.768-2.146-3.299.985-.616 1.524-1.585 1.524-2.76 0-.617-.099-1.163-.312-1.608zm-4.382 8.45H3.743v-2.906h4.851c.838 0 1.626.38 1.626 1.453-.001 1.072-.789 1.453-1.627 1.453zm-.211-5.49H3.743V7.394h4.64c.784 0 1.544.332 1.544 1.29 0 .957-.76 1.294-1.544 1.294z"/>
-                          </svg>
-                        </div>
-                        <ArrowUpRight className="w-4 h-4 text-white/20 group-hover:text-indigo-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="font-heading text-lg font-semibold text-white tracking-tight mt-8">
-                        Behance
-                      </h3>
-
-                      {/* Description */}
-                      <p className="text-white/40 text-xs font-light leading-relaxed mt-2.5 font-body">
-                        Explore full visual case studies, UI templates, and component design patterns.
-                      </p>
-                    </div>
-
-                    {/* Footer link trigger */}
-                    <span className="font-mono text-[9px] uppercase tracking-widest text-indigo-400 group-hover:text-indigo-300 transition-colors duration-200 mt-8 block select-none">
-                      See My Work
-                    </span>
-                  </a>
-                </div>
-              </ScrollReveal>
-            );
-          })()}
-        </div>
-      </section>
-
-      {/* ─── Footer ─── */}
-      <footer className="w-full border-t border-white/[0.04] bg-[#080809]">
-        <div className="max-w-[1320px] mx-auto px-6">
-          {/* Top footer row */}
-          <div className="py-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-            {/* Brand */}
-            <div className="space-y-2">
-              <span className="font-heading text-base font-semibold text-white tracking-widest uppercase select-none">
-                hammad.design
-              </span>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-white/25 select-none">
-                Product Designer · AI Generalist · Entrepreneur
-              </p>
-            </div>
-
-            {/* Nav links */}
-            <nav className="flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-[10px] uppercase tracking-widest text-white/30">
+          {/* ── Navigation Cards Grid ── */}
+          <ScrollReveal delay={0.1}>
+            <div className="mt-20 md:mt-28 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl">
               {[
-                { label: "Work", href: "#work" },
-                { label: "Toolkit", href: "#skills" },
-                { label: "Process", href: "#process" },
-                { label: "Contact", href: "#contact" },
-                { label: "Games", href: "/games" },
-                { label: "LinkedIn", href: CONTACT_DATA.linkedin, external: true },
-                { label: "Behance", href: CONTACT_DATA.behance, external: true },
-              ].map((link) => (
+                {
+                  label: "Work",
+                  href: "#work",
+                  icon: (
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/>
+                    </svg>
+                  ),
+                },
+                {
+                  label: "Toolkit",
+                  href: "#skills",
+                  icon: (
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                  ),
+                },
+                {
+                  label: "Process",
+                  href: "#process",
+                  icon: (
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                  ),
+                },
+                {
+                  label: "Contact",
+                  href: `mailto:${CONTACT_DATA.email}`,
+                  icon: (
+                    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                    </svg>
+                  ),
+                },
+              ].map((item) => (
                 <a
-                  key={link.label}
-                  href={link.href}
-                  target={link.external ? "_blank" : undefined}
-                  rel={link.external ? "noopener noreferrer" : undefined}
-                  className="hover:text-white transition-colors duration-200 cursor-pointer"
+                  key={item.label}
+                  href={item.href}
+                  className="group relative flex flex-col gap-4 border border-white/[0.1] hover:border-white/[0.2] bg-white/[0.03] hover:bg-white/[0.06] backdrop-blur-sm rounded-2xl px-6 py-6 transition-all duration-300 select-none overflow-hidden"
                 >
-                  {link.label}
+                  {/* Hover glow */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  <span className="text-white/60 group-hover:text-white transition-colors duration-300 relative z-10">
+                    {item.icon}
+                  </span>
+                  <span className="font-heading text-base font-semibold text-white/80 group-hover:text-white tracking-tight transition-colors duration-300 relative z-10">
+                    {item.label}
+                  </span>
                 </a>
               ))}
-            </nav>
+            </div>
+          </ScrollReveal>
+
+          {/* ── Divider ── */}
+          <div className="mt-16 md:mt-20 h-[1px] bg-gradient-to-r from-transparent via-white/[0.08] to-transparent" />
+
+          {/* ── Bottom Footer Bar ── */}
+          <ScrollReveal delay={0.15}>
+            <div className="mt-8 md:mt-10 flex flex-col sm:flex-row justify-between items-center gap-6">
+
+              {/* Credit text */}
+              <p className="font-mono text-[11px] text-white/25 tracking-wider select-none">
+                Designed & Developed by{" "}
+                <span className="text-white/50 font-semibold">{ABOUT_DATA.shortName}</span>
+              </p>
+
+              {/* Social Icons */}
+              <div className="flex items-center gap-3">
+                {/* LinkedIn */}
+                <a
+                  href={CONTACT_DATA.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full border border-white/[0.12] bg-white/[0.04] hover:bg-white/[0.1] hover:border-white/[0.25] flex items-center justify-center transition-all duration-300 group"
+                  aria-label="LinkedIn"
+                >
+                  <svg className="w-4 h-4 text-white/50 group-hover:text-white transition-colors duration-300" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+
+                {/* Behance */}
+                <a
+                  href={CONTACT_DATA.behance}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full border border-white/[0.12] bg-white/[0.04] hover:bg-white/[0.1] hover:border-white/[0.25] flex items-center justify-center transition-all duration-300 group"
+                  aria-label="Behance"
+                >
+                  <svg className="w-4 h-4 text-white/50 group-hover:text-white transition-colors duration-300" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22 7h-7V5h7v2zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029H23.726zm-7.785-4h4.44c-.185-1.383-1.086-1.92-2.295-1.92-1.385 0-2.098.694-2.145 1.92zm-2.965-6.772c-.2-.752-.75-1.356-1.615-1.628-1.086-.343-2.527-.343-3.771-.343H0v16h8.029c1.26 0 2.76-.087 3.913-.557 1.29-.528 2.073-1.675 2.073-3.205 0-1.485-.75-2.768-2.146-3.299.985-.616 1.524-1.585 1.524-2.76 0-.617-.099-1.163-.312-1.608zm-4.382 8.45H3.743v-2.906h4.851c.838 0 1.626.38 1.626 1.453-.001 1.072-.789 1.453-1.627 1.453zm-.211-5.49H3.743V7.394h4.64c.784 0 1.544.332 1.544 1.29 0 .957-.76 1.294-1.544 1.294z"/>
+                  </svg>
+                </a>
+
+                {/* X / Twitter */}
+                <a
+                  href="https://x.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full border border-white/[0.12] bg-white/[0.04] hover:bg-white/[0.1] hover:border-white/[0.25] flex items-center justify-center transition-all duration-300 group"
+                  aria-label="X"
+                >
+                  <svg className="w-3.5 h-3.5 text-white/50 group-hover:text-white transition-colors duration-300" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
+
+                {/* Email */}
+                <a
+                  href={`mailto:${CONTACT_DATA.email}`}
+                  className="w-10 h-10 rounded-full border border-white/[0.12] bg-white/[0.04] hover:bg-white/[0.1] hover:border-white/[0.25] flex items-center justify-center transition-all duration-300 group"
+                  aria-label="Email"
+                >
+                  <svg className="w-4 h-4 text-white/50 group-hover:text-white transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </ScrollReveal>
+
+          {/* ── Copyright ── */}
+          <div className="mt-10 text-center">
+            <span className="font-mono text-[9px] text-white/15 uppercase tracking-widest select-none">
+              © {new Date().getFullYear()} {ABOUT_DATA.shortName} · All rights reserved
+            </span>
           </div>
 
-          {/* Bottom footer row */}
-          <div className="py-6 border-t border-white/[0.04] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 font-mono text-[10px] text-white/20 uppercase tracking-widest select-none">
-            <span>© {new Date().getFullYear()} {ABOUT_DATA.shortName} · All rights reserved</span>
-            <span className="text-white/15">{CONTACT_DATA.email}</span>
-          </div>
         </div>
-      </footer>
+      </section>
 
     </div>
   );
 }
-
-
