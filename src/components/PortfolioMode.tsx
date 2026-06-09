@@ -686,9 +686,9 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
 
                 {/* The Portrait Image */}
                 <img
-                  src="/hammad.png"
+                  src="/IMG_9840.jpg"
                   alt="Hammad Zia Portrait"
-                  className="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-103 transition-all duration-700 ease-out z-10"
+                  className="w-full h-full object-cover object-top grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-103 transition-all duration-700 ease-out z-10"
                 />
 
               </motion.div>
