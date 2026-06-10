@@ -10,12 +10,19 @@ import {
   Layout,
   Layers,
   Tv,
+  Flame,
+  Zap,
 } from "lucide-react";
 import { CONTACT_DATA } from "@/components/ArtboardContent";
 
 // --- Background Particles ---
-const CanvasParticles = () => {
+const CanvasParticles = ({ accentColor }: { accentColor: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const colorRef = useRef(accentColor);
+  
+  useEffect(() => {
+    colorRef.current = accentColor;
+  }, [accentColor]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -33,13 +40,6 @@ const CanvasParticles = () => {
       height = canvas.height = window.innerHeight;
     };
     window.addEventListener('resize', handleResize);
-
-    const colors = [
-      'rgba(139, 92, 246, 0.4)', // Violet
-      'rgba(6, 182, 212, 0.4)',  // Cyan
-      'rgba(236, 72, 153, 0.35)', // Pink
-      'rgba(245, 158, 11, 0.3)'   // Amber
-    ];
     
     const particles = Array.from({ length: 45 }).map(() => ({
       x: Math.random() * width,
@@ -47,8 +47,8 @@ const CanvasParticles = () => {
       vx: (Math.random() - 0.5) * 0.5,
       vy: (Math.random() - 0.5) * 0.5,
       radius: Math.random() * 2.5 + 1.5,
-      color: colors[Math.floor(Math.random() * colors.length)],
       glow: Math.random() * 12 + 6,
+      colorShift: Math.random(),
     }));
 
     const render = () => {
@@ -62,12 +62,18 @@ const CanvasParticles = () => {
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
+        const alpha = p.colorShift * 0.25 + 0.15;
+        const color = p.colorShift > 0.75 
+          ? `rgba(255, 255, 255, ${alpha * 0.4})` 
+          : `${colorRef.current}${Math.floor(alpha * 255).toString(16).padStart(2, '0')}`;
+
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
+        ctx.fillStyle = color;
         ctx.shadowBlur = p.glow;
-        ctx.shadowColor = p.color;
+        ctx.shadowColor = colorRef.current;
         ctx.fill();
+        ctx.shadowBlur = 0;
       });
       animationFrameId = requestAnimationFrame(render);
     };
@@ -117,6 +123,22 @@ const PREMIUM_GAMES: GameItem[] = [
     icon: Tv,
     color: 'text-pink-400 border-pink-500/20 bg-pink-500/5',
     accent: '#ec4899'
+  },
+  {
+    id: 'jump',
+    title: 'Neon Astro Run',
+    desc: 'Dash over glowing rose spike hazards. Avoid collisions as the velocity accelerates dynamically over time.',
+    icon: Flame,
+    color: 'text-emerald-400 border-emerald-500/20 bg-emerald-500/5',
+    accent: '#10b981'
+  },
+  {
+    id: 'snake',
+    title: 'Retro Cyber Snake',
+    desc: 'Guide a glowing grid crawler to devour byte blocks. Avoid wall crashes and self-collision hazards.',
+    icon: Zap,
+    color: 'text-amber-400 border-amber-500/20 bg-amber-500/5',
+    accent: '#f59e0b'
   }
 ];
 
@@ -126,7 +148,24 @@ const PREMIUM_GAMES: GameItem[] = [
 function NeonBrickBreaker() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
+
+  // Load high score from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('brick_breaker_highscore');
+    if (saved) {
+      setHighScore(parseInt(saved, 10));
+    }
+  }, []);
+
+  // Sync high score whenever score changes
+  useEffect(() => {
+    if (score > highScore) {
+      setHighScore(score);
+      localStorage.setItem('brick_breaker_highscore', score.toString());
+    }
+  }, [score, highScore]);
   const [isGameWon, setIsGameWon] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [resetTrigger, setResetTrigger] = useState(0);
@@ -137,15 +176,15 @@ function NeonBrickBreaker() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const paddle = { x: canvas.width / 2 - 50, width: 100, height: 12 };
-    const ball = { x: canvas.width / 2, y: canvas.height - 35, vx: 3, vy: -5, radius: 8 };
+    const paddle = { x: canvas.width / 2 - 60, width: 120, height: 12 };
+    const ball = { x: canvas.width / 2, y: canvas.height - 35, vx: 4.5, vy: -7, radius: 8 };
     
     const rowCount = 4;
     const colCount = 8;
-    const brickWidth = 72;
-    const brickHeight = 18;
-    const brickPadding = 10;
-    const offsetTop = 50;
+    const brickWidth = 92;
+    const brickHeight = 20;
+    const brickPadding = 12;
+    const offsetTop = 60;
     const offsetLeft = (canvas.width - (colCount * (brickWidth + brickPadding) - brickPadding)) / 2;
 
     const colors = ['#8b5cf6', '#06b6d4', '#ec4899', '#f59e0b'];
@@ -286,11 +325,11 @@ function NeonBrickBreaker() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[700px]">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
-          width={700}
-          height={400}
+          width={900}
+          height={500}
           className="w-full h-auto bg-[#070709] rounded-xl block"
         />
         
@@ -346,8 +385,9 @@ function NeonBrickBreaker() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[700px]">
+      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-cyan-400 font-heading text-base">{score}</strong></span>
+        <span>High Score: <strong className="text-amber-400 font-heading text-base">{highScore}</strong></span>
         <span>Drag / move mouse to play</span>
       </div>
     </div>
@@ -360,7 +400,24 @@ function NeonBrickBreaker() {
 function MultiBallChaos() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
+
+  // Load high score from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('multiball_highscore');
+    if (saved) {
+      setHighScore(parseInt(saved, 10));
+    }
+  }, []);
+
+  // Sync high score whenever score changes
+  useEffect(() => {
+    if (score > highScore) {
+      setHighScore(score);
+      localStorage.setItem('multiball_highscore', score.toString());
+    }
+  }, [score, highScore]);
   const [isGameWon, setIsGameWon] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [resetTrigger, setResetTrigger] = useState(0);
@@ -371,21 +428,21 @@ function MultiBallChaos() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const paddle = { x: canvas.width / 2 - 50, width: 100, height: 12 };
+    const paddle = { x: canvas.width / 2 - 60, width: 120, height: 12 };
     
     // 3 Bouncing balls
     const balls = [
-      { x: canvas.width / 2, y: canvas.height - 35, vx: 3, vy: -5, radius: 8, active: true },
-      { x: canvas.width / 2 - 30, y: canvas.height - 45, vx: -2.5, vy: -5.5, radius: 8, active: true },
-      { x: canvas.width / 2 + 30, y: canvas.height - 45, vx: 4, vy: -4.5, radius: 8, active: true },
+      { x: canvas.width / 2, y: canvas.height - 35, vx: 4.5, vy: -7, radius: 8, active: true },
+      { x: canvas.width / 2 - 30, y: canvas.height - 45, vx: -3.5, vy: -7.5, radius: 8, active: true },
+      { x: canvas.width / 2 + 30, y: canvas.height - 45, vx: 5.5, vy: -6.5, radius: 8, active: true },
     ];
     
     const rowCount = 4;
     const colCount = 8;
-    const brickWidth = 72;
-    const brickHeight = 18;
-    const brickPadding = 10;
-    const offsetTop = 50;
+    const brickWidth = 92;
+    const brickHeight = 20;
+    const brickPadding = 12;
+    const offsetTop = 60;
     const offsetLeft = (canvas.width - (colCount * (brickWidth + brickPadding) - brickPadding)) / 2;
 
     const colors = ['#8b5cf6', '#06b6d4', '#ec4899', '#f59e0b'];
@@ -527,11 +584,11 @@ function MultiBallChaos() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[700px]">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
-          width={700}
-          height={400}
+          width={900}
+          height={500}
           className="w-full h-auto bg-[#070709] rounded-xl block"
         />
         
@@ -587,8 +644,9 @@ function MultiBallChaos() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[700px]">
+      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-violet-400 font-heading text-base">{score}</strong></span>
+        <span>High Score: <strong className="text-amber-400 font-heading text-base">{highScore}</strong></span>
         <span>Drag / move mouse to play</span>
       </div>
     </div>
@@ -603,6 +661,34 @@ function AstroPong() {
   const [playerScore, setPlayerScore] = useState(0);
   const [aiScore, setAiScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [winStreak, setWinStreak] = useState(0);
+  const [bestStreak, setBestStreak] = useState(0);
+
+  // Load streaks from localStorage
+  useEffect(() => {
+    const savedBest = localStorage.getItem('pong_best_streak');
+    const savedCurrent = localStorage.getItem('pong_current_streak');
+    if (savedBest) setBestStreak(parseInt(savedBest, 10));
+    if (savedCurrent) setWinStreak(parseInt(savedCurrent, 10));
+  }, []);
+
+  // Sync Win Streaks dynamically on Game Over
+  useEffect(() => {
+    if (isGameOver) {
+      if (playerScore >= 5) {
+        const nextStreak = winStreak + 1;
+        setWinStreak(nextStreak);
+        localStorage.setItem('pong_current_streak', nextStreak.toString());
+        if (nextStreak > bestStreak) {
+          setBestStreak(nextStreak);
+          localStorage.setItem('pong_best_streak', nextStreak.toString());
+        }
+      } else if (aiScore >= 5) {
+        setWinStreak(0);
+        localStorage.setItem('pong_current_streak', '0');
+      }
+    }
+  }, [isGameOver, playerScore, aiScore, winStreak, bestStreak]);
   const [winnerMessage, setWinnerMessage] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [resetTrigger, setResetTrigger] = useState(0);
@@ -614,18 +700,18 @@ function AstroPong() {
     if (!ctx) return;
 
     const pWidth = 12;
-    const pHeight = 80;
-    const player = { x: 20, y: canvas.height / 2 - pHeight / 2 };
-    const ai = { x: canvas.width - 20 - pWidth, y: canvas.height / 2 - pHeight / 2 };
-    const ball = { x: canvas.width / 2, y: canvas.height / 2, vx: 4, vy: 2, radius: 8 };
+    const pHeight = 90;
+    const player = { x: 25, y: canvas.height / 2 - pHeight / 2 };
+    const ai = { x: canvas.width - 25 - pWidth, y: canvas.height / 2 - pHeight / 2 };
+    const ball = { x: canvas.width / 2, y: canvas.height / 2, vx: 5.5, vy: 3, radius: 8 };
 
     let animationFrameId: number;
 
     const resetBall = (dir: number) => {
       ball.x = canvas.width / 2;
       ball.y = canvas.height / 2;
-      ball.vx = dir * 4;
-      ball.vy = (Math.random() - 0.5) * 6;
+      ball.vx = dir * 5.5;
+      ball.vy = (Math.random() - 0.5) * 8;
     };
 
     const render = () => {
@@ -684,7 +770,7 @@ function AstroPong() {
 
         // AI Logic: follow the ball vertical position
         const aiTarget = ball.y - pHeight / 2;
-        const aiSpeed = 3.6; // capped speed to make game beatable
+        const aiSpeed = 4.8; // capped speed to make game beatable
         if (ai.y < aiTarget) {
           ai.y += Math.min(aiSpeed, aiTarget - ai.y);
         } else if (ai.y > aiTarget) {
@@ -783,11 +869,11 @@ function AstroPong() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[700px]">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
-          width={700}
-          height={400}
+          width={900}
+          height={500}
           className="w-full h-auto bg-[#070709] rounded-xl block"
         />
 
@@ -831,9 +917,695 @@ function AstroPong() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[700px]">
-        <span>Player (Left) vs AI (Right)</span>
+      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
+        <span>Streak: <strong className="text-pink-400 font-heading text-base">{winStreak}</strong></span>
+        <span>Best Streak: <strong className="text-amber-400 font-heading text-base">{bestStreak}</strong></span>
         <span>Drag / move mouse vertically to steer</span>
+      </div>
+    </div>
+  );
+}
+
+// =========================================================
+// 🕹️ MODULE 4: NEON DINO JUMP COMPONENT (ASTRO RUN)
+// =========================================================
+function NeonDinoJump() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [resetTrigger, setResetTrigger] = useState(0);
+
+  // Load high score from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('astro_jump_highscore');
+    if (saved) {
+      setHighScore(parseInt(saved, 10));
+    }
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const gravity = 0.65;
+    const dino = {
+      x: 80,
+      y: canvas.height - 40 - 42,
+      width: 38,
+      height: 42,
+      vy: 0,
+      jumpForce: -12.5,
+      isJumping: false,
+    };
+
+    let legAngle = 0;
+    let gameSpeed = 5.5;
+    let obstacleTimer = 0;
+    let scoreTimer = 0;
+    let currentScore = 0;
+
+    // Obstacles
+    const obstacles: { x: number; y: number; width: number; height: number; speed: number }[] = [];
+
+    // Stars background (parallax)
+    const stars = Array.from({ length: 25 }).map(() => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * (canvas.height - 100),
+      size: Math.random() * 2 + 1,
+      speed: Math.random() * 1.5 + 0.5,
+    }));
+
+    // Particles array for jump and running dust trail
+    let particles: { x: number; y: number; vx: number; vy: number; radius: number; color: string; alpha: number }[] = [];
+
+    let animationFrameId: number;
+
+    const spawnObstacle = () => {
+      const height = Math.floor(Math.random() * 25) + 30; // 30 to 55
+      const width = Math.floor(Math.random() * 15) + 20; // 20 to 35
+      obstacles.push({
+        x: canvas.width,
+        y: canvas.height - 40 - height,
+        width,
+        height,
+        speed: gameSpeed,
+      });
+    };
+
+    const render = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Draw Starry Parallax Background
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+        if (isPlaying && !isGameOver) {
+          star.x -= star.speed;
+          if (star.x < 0) {
+            star.x = canvas.width;
+            star.y = Math.random() * (canvas.height - 100);
+          }
+        }
+      });
+
+      // 2. Draw Neon Ground Line
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height - 40);
+      ctx.lineTo(canvas.width, canvas.height - 40);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Ground grid lines moving left (to create depth/speed motion)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.lineWidth = 1;
+      const groundOffset = isPlaying && !isGameOver ? (Date.now() / 15) % 40 : 0;
+      for (let x = -groundOffset; x < canvas.width; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, canvas.height - 40);
+        ctx.lineTo(x - 20, canvas.height);
+        ctx.stroke();
+      }
+
+      // 3. Update Dino Physics & Movement
+      if (isPlaying && !isGameOver) {
+        // Apply Gravity
+        dino.vy += gravity;
+        dino.y += dino.vy;
+
+        // Ground check
+        const groundY = canvas.height - 40 - dino.height;
+        if (dino.y >= groundY) {
+          dino.y = groundY;
+          dino.vy = 0;
+          dino.isJumping = false;
+        }
+
+        // Run leg animation angle
+        if (!dino.isJumping) {
+          legAngle += 0.25;
+        }
+
+        // Dust particles trail
+        if (!dino.isJumping && Math.random() < 0.3) {
+          particles.push({
+            x: dino.x + 5,
+            y: canvas.height - 42,
+            vx: -Math.random() * 2 - 1,
+            vy: -Math.random() * 1,
+            radius: Math.random() * 2 + 1,
+            color: 'rgba(34, 197, 94, 0.4)',
+            alpha: 1
+          });
+        }
+      }
+
+      // 4. Draw Dino Leg & Body Sprites
+      const dx = dino.x;
+      const dy = dino.y;
+
+      // Draw Dino (Stylized Neon T-Rex)
+      ctx.beginPath();
+      ctx.strokeStyle = '#22c55e'; // Neon green
+      ctx.lineWidth = 3;
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#22c55e';
+
+      ctx.moveTo(dx + 12, dy); // Head top
+      ctx.lineTo(dx + 35, dy); // Head front/snout
+      ctx.lineTo(dx + 35, dy + 14); // Snout bottom
+      ctx.lineTo(dx + 26, dy + 14); // Mouth inside
+      ctx.lineTo(dx + 22, dy + 18); // Neck
+      ctx.lineTo(dx + 28, dy + 32); // Chest
+      ctx.lineTo(dx + 10, dy + 32); // Belly
+      ctx.lineTo(dx + 2, dy + 22); // Tail base
+      ctx.lineTo(dx, dy + 15); // Tail tip
+      ctx.lineTo(dx + 8, dy + 10); // Back
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fillStyle = 'rgba(34, 197, 94, 0.15)';
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Draw Legs
+      const legOffset = Math.sin(legAngle) * 7;
+      ctx.strokeStyle = '#22c55e';
+      ctx.lineWidth = 3;
+      
+      // Leg 1
+      ctx.beginPath();
+      ctx.moveTo(dx + 14, dy + 32);
+      ctx.lineTo(dino.isJumping ? dx + 10 : dx + 14 - legOffset, dy + 40);
+      ctx.stroke();
+
+      // Leg 2
+      ctx.beginPath();
+      ctx.moveTo(dx + 22, dy + 32);
+      ctx.lineTo(dino.isJumping ? dx + 26 : dx + 22 + legOffset, dy + 40);
+      ctx.stroke();
+
+      // Small eye
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(dx + 26, dy + 5, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 5. Update and Draw Particles
+      particles.forEach((p, idx) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.02;
+        if (p.alpha <= 0) {
+          particles.splice(idx, 1);
+          return;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color.replace('0.4', p.alpha.toFixed(2));
+        ctx.fill();
+      });
+
+      // 6. Update and Draw Obstacles
+      if (isPlaying && !isGameOver) {
+        obstacleTimer++;
+        const spawnRate = Math.max(70, 120 - Math.floor(currentScore / 200));
+        if (obstacleTimer >= spawnRate + Math.random() * 40) {
+          spawnObstacle();
+          obstacleTimer = 0;
+        }
+
+        gameSpeed += 0.0007;
+
+        scoreTimer++;
+        if (scoreTimer >= 8) {
+          currentScore += 10;
+          setScore(currentScore);
+          scoreTimer = 0;
+        }
+      }
+
+      obstacles.forEach((obs, idx) => {
+        if (isPlaying && !isGameOver) {
+          obs.x -= gameSpeed;
+        }
+
+        ctx.beginPath();
+        ctx.strokeStyle = '#f43f5e'; // Rose/Red neon
+        ctx.lineWidth = 3;
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#f43f5e';
+
+        ctx.moveTo(obs.x, obs.y + obs.height);
+        ctx.lineTo(obs.x + obs.width / 2, obs.y);
+        ctx.lineTo(obs.x + obs.width, obs.y + obs.height);
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fillStyle = 'rgba(244, 63, 94, 0.15)';
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        const hitboxPaddingX = 6;
+        const hitboxPaddingY = 4;
+        if (
+          dino.x + hitboxPaddingX < obs.x + obs.width &&
+          dino.x + dino.width - hitboxPaddingX > obs.x &&
+          dino.y + hitboxPaddingY < obs.y + obs.height &&
+          dino.y + dino.height - hitboxPaddingY > obs.y
+        ) {
+          setIsGameOver(true);
+          setIsPlaying(false);
+
+          if (currentScore > highScore) {
+            setHighScore(currentScore);
+            localStorage.setItem('astro_jump_highscore', currentScore.toString());
+          }
+
+          for (let i = 0; i < 20; i++) {
+            particles.push({
+              x: dino.x + dino.width / 2,
+              y: dino.y + dino.height / 2,
+              vx: (Math.random() - 0.5) * 8,
+              vy: (Math.random() - 0.5) * 8,
+              radius: Math.random() * 3 + 2,
+              color: 'rgba(244, 63, 94, 0.8)',
+              alpha: 1
+            });
+          }
+        }
+
+        if (obs.x + obs.width < 0) {
+          obstacles.splice(idx, 1);
+        }
+      });
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    const handleJump = () => {
+      if (!isPlaying || isGameOver) return;
+      if (!dino.isJumping) {
+        dino.vy = dino.jumpForce;
+        dino.isJumping = true;
+
+        for (let i = 0; i < 6; i++) {
+          particles.push({
+            x: dino.x + 10,
+            y: canvas.height - 42,
+            vx: (Math.random() - 0.7) * 3,
+            vy: -Math.random() * 2,
+            radius: Math.random() * 2.5 + 1.5,
+            color: 'rgba(34, 197, 94, 0.5)',
+            alpha: 1
+          });
+        }
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Space' || e.code === 'ArrowUp') {
+        e.preventDefault();
+        handleJump();
+      }
+    };
+
+    const handleCanvasTouch = () => {
+      handleJump();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    canvas.addEventListener('click', handleCanvasTouch);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('keydown', handleKeyDown);
+      canvas.removeEventListener('click', handleCanvasTouch);
+    };
+  }, [isPlaying, resetTrigger, isGameOver, highScore]);
+
+  return (
+    <div className="w-full flex flex-col items-center">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+        <canvas
+          ref={canvasRef}
+          width={900}
+          height={500}
+          className="w-full h-auto bg-[#070709] rounded-xl block"
+        />
+
+        {!isPlaying && !isGameOver && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl p-6">
+            <button
+              onClick={() => {
+                setScore(0);
+                setIsPlaying(true);
+              }}
+              className="bg-white text-black font-semibold font-mono text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-white/90 shadow-xl active:scale-95 transition-all flex items-center gap-2"
+            >
+              <Play className="w-4 h-4 fill-black" /> Start Astro Run
+            </button>
+            <p className="font-mono text-[9px] text-white/50 uppercase tracking-widest mt-4">Press SPACE / Arrow Up or Tap Screen to Jump</p>
+          </div>
+        )}
+
+        {isGameOver && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+            <h3 className="font-heading text-xl font-bold text-red-500 mb-1">System Crashed</h3>
+            <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Score: {score} | Best: {highScore}</p>
+            <button
+              onClick={() => {
+                setScore(0);
+                setIsGameOver(false);
+                setIsPlaying(true);
+                setResetTrigger(p => p + 1);
+              }}
+              className="font-mono text-[10px] uppercase tracking-widest border border-white/20 hover:border-white/40 bg-white/[0.02] hover:bg-white/[0.05] rounded-full px-6 py-3 transition-all text-white flex items-center gap-1.5"
+            >
+              <RotateCcw className="w-3.5 h-3.5" /> Reboot System
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
+        <span>Score: <strong className="text-green-400 font-heading text-base">{score}</strong></span>
+        <span>High Score: <strong className="text-amber-400 font-heading text-base">{highScore}</strong></span>
+        <span>Tap / Press Space to jump</span>
+      </div>
+    </div>
+  );
+}
+
+// =========================================================
+// 🕹️ MODULE 5: RETRO CYBER SNAKE COMPONENT
+// =========================================================
+function RetroCyberSnake() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [resetTrigger, setResetTrigger] = useState(0);
+
+  // Load high score from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('snake_highscore');
+    if (saved) {
+      setHighScore(parseInt(saved, 10));
+    }
+  }, []);
+
+  // Sync high score whenever score changes
+  useEffect(() => {
+    if (score > highScore) {
+      setHighScore(score);
+      localStorage.setItem('snake_highscore', score.toString());
+    }
+  }, [score, highScore]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const gridWidth = 45;
+    const gridHeight = 25;
+    const blockSize = 20;
+
+    let snake = [
+      { x: 10, y: 12 },
+      { x: 9, y: 12 },
+      { x: 8, y: 12 }
+    ];
+
+    let direction = 'RIGHT';
+    let nextDirection = 'RIGHT';
+    let food = { x: 25, y: 12 };
+    
+    let moveCooldown = 0;
+    let baseInterval = 7;
+
+    let particles: { x: number; y: number; vx: number; vy: number; radius: number; color: string; alpha: number }[] = [];
+
+    const spawnFood = () => {
+      let newFood: { x: number; y: number } = { x: 0, y: 0 };
+      while (true) {
+        newFood = {
+          x: Math.floor(Math.random() * gridWidth),
+          y: Math.floor(Math.random() * gridHeight)
+        };
+        if (!snake.some(segment => segment.x === newFood.x && segment.y === newFood.y)) {
+          break;
+        }
+      }
+      food = newFood;
+    };
+
+    let animationFrameId: number;
+
+    const render = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += blockSize) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += blockSize) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+      }
+
+      if (isPlaying && !isGameOver) {
+        moveCooldown++;
+        const speedInterval = Math.max(4, baseInterval - Math.floor(snake.length / 8));
+        
+        if (moveCooldown >= speedInterval) {
+          direction = nextDirection;
+          const head = { ...snake[0] };
+
+          if (direction === 'UP') head.y -= 1;
+          else if (direction === 'DOWN') head.y += 1;
+          else if (direction === 'LEFT') head.x -= 1;
+          else if (direction === 'RIGHT') head.x += 1;
+
+          if (head.x < 0 || head.x >= gridWidth || head.y < 0 || head.y >= gridHeight) {
+            setIsGameOver(true);
+            setIsPlaying(false);
+          }
+
+          if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+            setIsGameOver(true);
+            setIsPlaying(false);
+          }
+
+          if (isPlaying && !isGameOver) {
+            snake.unshift(head);
+
+            if (head.x === food.x && head.y === food.y) {
+              setScore(s => s + 100);
+              spawnFood();
+
+              for (let i = 0; i < 15; i++) {
+                particles.push({
+                  x: food.x * blockSize + blockSize / 2,
+                  y: food.y * blockSize + blockSize / 2,
+                  vx: (Math.random() - 0.5) * 6,
+                  vy: (Math.random() - 0.5) * 6,
+                  radius: Math.random() * 2 + 1.5,
+                  color: 'rgba(236, 72, 153, 0.8)',
+                  alpha: 1
+                });
+              }
+            } else {
+              snake.pop();
+            }
+          }
+          moveCooldown = 0;
+        }
+      }
+
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#ec4899';
+      ctx.fillStyle = '#ec4899';
+      ctx.beginPath();
+      const foodPulse = Math.sin(Date.now() / 150) * 2;
+      ctx.roundRect(
+        food.x * blockSize + 2 - foodPulse/2, 
+        food.y * blockSize + 2 - foodPulse/2, 
+        blockSize - 4 + foodPulse, 
+        blockSize - 4 + foodPulse, 
+        4
+      );
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.roundRect(food.x * blockSize + 6, food.y * blockSize + 6, blockSize - 12, blockSize - 12, 2);
+      ctx.fill();
+
+      snake.forEach((segment, idx) => {
+        const isHead = idx === 0;
+        ctx.beginPath();
+        
+        ctx.shadowBlur = isHead ? 20 : 12;
+        ctx.shadowColor = '#f59e0b';
+        ctx.fillStyle = isHead ? '#ffffff' : '#f59e0b';
+
+        const padding = isHead ? 1.5 : 2;
+        ctx.roundRect(
+          segment.x * blockSize + padding, 
+          segment.y * blockSize + padding, 
+          blockSize - padding * 2, 
+          blockSize - padding * 2, 
+          isHead ? 6 : 4
+        );
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        if (isHead) {
+          ctx.fillStyle = '#000000';
+          ctx.beginPath();
+          if (direction === 'RIGHT' || direction === 'LEFT') {
+            ctx.arc(segment.x * blockSize + 10, segment.y * blockSize + 6, 2, 0, Math.PI * 2);
+            ctx.arc(segment.x * blockSize + 10, segment.y * blockSize + 14, 2, 0, Math.PI * 2);
+          } else {
+            ctx.arc(segment.x * blockSize + 6, segment.y * blockSize + 10, 2, 0, Math.PI * 2);
+            ctx.arc(segment.x * blockSize + 14, segment.y * blockSize + 10, 2, 0, Math.PI * 2);
+          }
+          ctx.fill();
+        }
+      });
+
+      particles.forEach((p, idx) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.03;
+        if (p.alpha <= 0) {
+          particles.splice(idx, 1);
+          return;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color.replace('0.8', p.alpha.toFixed(2));
+        ctx.fill();
+      });
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isPlaying || isGameOver) return;
+      
+      const key = e.code;
+      if ((key === 'ArrowUp' || key === 'KeyW') && direction !== 'DOWN') {
+        e.preventDefault();
+        nextDirection = 'UP';
+      } else if ((key === 'ArrowDown' || key === 'KeyS') && direction !== 'UP') {
+        e.preventDefault();
+        nextDirection = 'DOWN';
+      } else if ((key === 'ArrowLeft' || key === 'KeyA') && direction !== 'RIGHT') {
+        e.preventDefault();
+        nextDirection = 'LEFT';
+      } else if ((key === 'ArrowRight' || key === 'KeyD') && direction !== 'LEFT') {
+        e.preventDefault();
+        nextDirection = 'RIGHT';
+      }
+    };
+
+    let startX = 0;
+    let startY = 0;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (!isPlaying || isGameOver) return;
+      
+      const diffX = e.changedTouches[0].clientX - startX;
+      const diffY = e.changedTouches[0].clientY - startY;
+
+      if (Math.abs(diffX) > Math.abs(diffY)) {
+        if (diffX > 30 && direction !== 'LEFT') nextDirection = 'RIGHT';
+        else if (diffX < -30 && direction !== 'RIGHT') nextDirection = 'LEFT';
+      } else {
+        if (diffY > 30 && direction !== 'UP') nextDirection = 'DOWN';
+        else if (diffY < -30 && direction !== 'DOWN') nextDirection = 'UP';
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    canvas.addEventListener('touchstart', handleTouchStart, { passive: true });
+    canvas.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('keydown', handleKeyDown);
+      canvas.removeEventListener('touchstart', handleTouchStart);
+      canvas.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, [isPlaying, resetTrigger, isGameOver]);
+
+  return (
+    <div className="w-full flex flex-col items-center">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+        <canvas
+          ref={canvasRef}
+          width={900}
+          height={500}
+          className="w-full h-auto bg-[#070709] rounded-xl block"
+        />
+
+        {!isPlaying && !isGameOver && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl p-6">
+            <button
+              onClick={() => {
+                setScore(0);
+                setIsPlaying(true);
+              }}
+              className="bg-white text-black font-semibold font-mono text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-white/90 shadow-xl active:scale-95 transition-all flex items-center gap-2"
+            >
+              <Play className="w-4 h-4 fill-black" /> Boot Cyber Snake
+            </button>
+            <p className="font-mono text-[9px] text-white/50 uppercase tracking-widest mt-4">Use WASD / Arrow Keys or Swipe on Screen to Steer</p>
+          </div>
+        )}
+
+        {isGameOver && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+            <h3 className="font-heading text-xl font-bold text-red-500 mb-1">Matrix Collapsed</h3>
+            <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Total Bytes: {score} | Best: {highScore}</p>
+            <button
+              onClick={() => {
+                setScore(0);
+                setIsGameOver(false);
+                setIsPlaying(true);
+                setResetTrigger(p => p + 1);
+              }}
+              className="font-mono text-[10px] uppercase tracking-widest border border-white/20 hover:border-white/40 bg-white/[0.02] hover:bg-white/[0.05] rounded-full px-6 py-3 transition-all text-white flex items-center gap-1.5"
+            >
+              <RotateCcw className="w-3.5 h-3.5" /> Re-link System
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
+        <span>Score: <strong className="text-amber-500 font-heading text-base">{score}</strong></span>
+        <span>High Score: <strong className="text-amber-400 font-heading text-base">{highScore}</strong></span>
+        <span>WASD / Swipe to navigate</span>
       </div>
     </div>
   );
@@ -844,10 +1616,19 @@ function AstroPong() {
 // =========================================================
 export default function GamesPage() {
   const [activeGameId, setActiveGameId] = useState<string>('breaker');
+  const activeGame = PREMIUM_GAMES.find(g => g.id === activeGameId) || PREMIUM_GAMES[0];
 
   return (
     <div className="min-h-screen w-full bg-[#0a0a0c] text-white relative overflow-x-hidden font-body selection:bg-white selection:text-black flex flex-col">
-      <CanvasParticles />
+      <CanvasParticles accentColor={activeGame.accent} />
+
+      {/* Dynamic Ambient Background Glow */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-0 transition-all duration-1000 ease-in-out opacity-[0.08]"
+        style={{
+          background: `radial-gradient(circle at 50% 50%, ${activeGame.accent} 0%, transparent 60%)`,
+        }}
+      />
 
       {/* Navigation Header */}
       <header className="relative z-10 w-full border-b border-white/10 bg-[#0a0a0c]/90 backdrop-blur-md">
@@ -861,8 +1642,8 @@ export default function GamesPage() {
               Back to Portfolio
             </a>
             <div className="w-px h-4 bg-white/10" />
-            <span className="font-heading text-xs font-semibold text-white tracking-[0.2em] uppercase select-none">
-              HAMMAD.DESIGN <span className="text-white/30">/</span> <span className="text-violet-400 font-semibold tracking-widest">ARCADE</span>
+            <span className="font-heading text-sm font-bold text-white tracking-[0.25em] uppercase select-none">
+              HAMMAD.DESIGN <span className="text-white/30 font-normal">/</span> <span className="font-extrabold tracking-[0.2em] transition-colors duration-500" style={{ color: activeGame.accent }}>ARCADE</span>
             </span>
           </div>
 
@@ -881,8 +1662,8 @@ export default function GamesPage() {
       <main className="flex-1 max-w-[1200px] w-full mx-auto px-3 md:px-6 py-4 relative z-10 flex flex-col items-center gap-6">
         
         {/* Game deck selector: Horizontal list at the top */}
-        <div className="w-full max-w-[760px] select-none">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="w-full max-w-[960px] select-none">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
             {PREMIUM_GAMES.map((game) => {
               const IconComponent = game.icon;
               const isSelected = activeGameId === game.id;
@@ -891,26 +1672,47 @@ export default function GamesPage() {
                 <button
                   key={game.id}
                   onClick={() => setActiveGameId(game.id)}
-                  className={`text-left p-4.5 rounded-2xl border transition-all duration-300 flex items-center justify-between ${
-                    isSelected
-                      ? 'bg-white/[0.04] border-violet-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.15)] scale-[1.01]'
-                      : 'bg-[#121217] border-white/5 hover:border-white/15 text-white/50 hover:text-white'
-                  }`}
+                  className="text-center p-6 rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center gap-3.5 group cursor-pointer relative overflow-hidden"
+                  style={{
+                    backgroundColor: isSelected ? 'rgba(255,255,255,0.04)' : '#121217',
+                    borderColor: isSelected ? game.accent : 'rgba(255,255,255,0.05)',
+                    boxShadow: isSelected ? `0 0 25px ${game.accent}15` : 'none',
+                  }}
                 >
-                  <div className="flex items-center gap-3">
-                    <div className={`w-8.5 h-8.5 rounded-xl border flex items-center justify-center transition-all duration-300 ${
-                      isSelected ? 'bg-violet-500/20 border-violet-500/40 text-violet-400' : 'bg-white/[0.02] border-white/10 text-white/40'
-                    }`}>
-                      <IconComponent className="w-3.5 h-3.5" />
-                    </div>
-                    <div>
-                      <h4 className="font-heading text-[10px] font-semibold tracking-widest uppercase">{game.title}</h4>
-                      <p className="text-[9px] font-mono text-white/35 mt-0.5">Click to play</p>
-                    </div>
+                  {/* Subtle top indicator bar */}
+                  <div 
+                    className="absolute top-0 left-0 right-0 h-1 transition-all duration-300"
+                    style={{
+                      backgroundColor: isSelected ? game.accent : 'transparent',
+                    }}
+                  />
+
+                  <div 
+                    className="w-12 h-12 rounded-xl border flex items-center justify-center transition-all duration-300"
+                    style={{
+                      backgroundColor: isSelected ? `${game.accent}20` : 'rgba(255,255,255,0.02)',
+                      borderColor: isSelected ? `${game.accent}40` : 'rgba(255,255,255,0.1)',
+                      color: isSelected ? game.accent : 'rgba(255,255,255,0.4)',
+                      boxShadow: isSelected ? `0 0 15px ${game.accent}20` : 'none',
+                    }}
+                  >
+                    <IconComponent className="w-5.5 h-5.5 transition-transform duration-300 group-hover:scale-110" />
                   </div>
-                  <span className="font-mono text-[8px] uppercase tracking-wider text-white/40 border border-white/15 rounded-full px-2 py-0.5">
-                    Launch
-                  </span>
+
+                  <div className="flex flex-col items-center gap-1">
+                    <h4 
+                      className="font-heading text-[11px] font-bold tracking-widest uppercase transition-colors duration-200"
+                      style={{ color: isSelected ? '#ffffff' : 'rgba(255,255,255,0.6)' }}
+                    >
+                      {game.title}
+                    </h4>
+                    <p 
+                      className="text-[9px] font-mono transition-colors duration-200"
+                      style={{ color: isSelected ? game.accent : 'rgba(255,255,255,0.3)' }}
+                    >
+                      {isSelected ? 'ACTIVE CABINET' : 'CLICK TO PLAY'}
+                    </p>
+                  </div>
                 </button>
               );
             })}
@@ -918,23 +1720,37 @@ export default function GamesPage() {
         </div>
 
         {/* High Contrast Arcade Monitor cabinet (Fills remaining width, larger dimensions) */}
-        <div className="w-full max-w-[760px] p-3 md:p-8 rounded-2xl md:rounded-3xl border border-white/10 bg-[#121217] relative flex flex-col justify-between shadow-2xl">
+        <div 
+          className="w-full max-w-[960px] p-3 md:p-8 rounded-2xl md:rounded-3xl border bg-[#121217] relative flex flex-col shadow-2xl transition-all duration-500"
+          style={{
+            borderColor: `${activeGame.accent}25`,
+            boxShadow: `0 10px 40px -10px rgba(0,0,0,0.7), 0 0 30px ${activeGame.accent}08`,
+          }}
+        >
           
           {/* Cabinet view header status */}
           <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6 shrink-0">
-            <div className="flex items-center gap-2">
-              <Tv className="w-4 h-4 text-violet-400" />
+            <div className="flex items-center gap-3">
+              <Tv 
+                className="w-5 h-5 transition-colors duration-500" 
+                style={{ color: activeGame.accent }}
+              />
               <div>
-                <h2 className="font-heading text-base font-semibold text-white">
+                <h2 className="font-heading text-lg md:text-xl font-bold text-white tracking-wide">
                   {activeGameId === 'breaker' && 'Classic Brick Breaker'}
                   {activeGameId === 'multiball' && 'Multi-Ball Chaos'}
                   {activeGameId === 'pong' && 'Astro Pong (vs AI)'}
+                  {activeGameId === 'jump' && 'Neon Astro Run'}
+                  {activeGameId === 'snake' && 'Retro Cyber Snake'}
                 </h2>
               </div>
             </div>
             
             <div className="font-mono text-[9px] uppercase tracking-widest text-white/45 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse mr-1" />
+              <span 
+                className="w-1.5 h-1.5 rounded-full animate-pulse mr-1 transition-colors duration-500" 
+                style={{ backgroundColor: activeGame.accent }}
+              />
               Cabinet Ready
             </div>
           </div>
@@ -944,11 +1760,8 @@ export default function GamesPage() {
             {activeGameId === 'breaker' && <NeonBrickBreaker />}
             {activeGameId === 'multiball' && <MultiBallChaos />}
             {activeGameId === 'pong' && <AstroPong />}
-          </div>
-
-          {/* Cabinet view footer info */}
-          <div className="pt-4 border-t border-white/10 mt-6 text-center text-white/35 font-mono text-[8px] uppercase tracking-[0.2em] shrink-0">
-            Hammad Zia Playground Laboratory Output
+            {activeGameId === 'jump' && <NeonDinoJump />}
+            {activeGameId === 'snake' && <RetroCyberSnake />}
           </div>
         </div>
       </main>
