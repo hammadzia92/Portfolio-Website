@@ -338,16 +338,16 @@ function NeonBrickBreaker({ canvasHeight = 500 }: { canvasHeight?: number }) {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={canvasHeight}
-          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
         />
         
         {!isPlaying && !isGameOver && !isGameWon && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl p-6">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-none sm:rounded-xl p-6">
             <button
               onClick={() => setIsPlaying(true)}
               className="bg-white text-black font-semibold font-mono text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-white/90 shadow-xl active:scale-95 transition-all flex items-center gap-2"
@@ -359,7 +359,7 @@ function NeonBrickBreaker({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
 
         {isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-none sm:rounded-xl">
             <h3 className="font-heading text-xl font-bold text-red-400 mb-1">Orb Dropped</h3>
             <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Total Score: {score}</p>
             <button
@@ -378,7 +378,7 @@ function NeonBrickBreaker({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
 
         {isGameWon && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-none sm:rounded-xl">
             <Trophy className="w-10 h-10 text-amber-400 mb-2 animate-bounce" />
             <h3 className="font-heading text-xl font-bold text-emerald-400 mb-1">Grid Cleaned!</h3>
             <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Completed Score: {score}</p>
@@ -398,7 +398,7 @@ function NeonBrickBreaker({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 pb-4 px-4 sm:px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-cyan-400 font-heading text-xs sm:text-base">{score}</strong></span>
         <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
         <span className="hidden md:inline">Drag / move mouse to play</span>
@@ -601,16 +601,16 @@ function MultiBallChaos({ canvasHeight = 500 }: { canvasHeight?: number }) {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={canvasHeight}
-          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
         />
         
         {!isPlaying && !isGameOver && !isGameWon && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl p-6">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-none sm:rounded-xl p-6">
             <button
               onClick={() => setIsPlaying(true)}
               className="bg-white text-black font-semibold font-mono text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-white/90 shadow-xl active:scale-95 transition-all flex items-center gap-2"
@@ -622,7 +622,7 @@ function MultiBallChaos({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
 
         {isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-none sm:rounded-xl">
             <h3 className="font-heading text-xl font-bold text-red-400 mb-1">Chaos Terminated</h3>
             <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Total Score: {score}</p>
             <button
@@ -641,7 +641,7 @@ function MultiBallChaos({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
 
         {isGameWon && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-none sm:rounded-xl">
             <Trophy className="w-10 h-10 text-amber-400 mb-2 animate-bounce" />
             <h3 className="font-heading text-xl font-bold text-emerald-400 mb-1">Grid Cleaned!</h3>
             <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Completed Score: {score}</p>
@@ -661,7 +661,7 @@ function MultiBallChaos({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 pb-4 px-4 sm:px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-violet-400 font-heading text-xs sm:text-base">{score}</strong></span>
         <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
         <span className="hidden md:inline">Drag / move mouse to play</span>
@@ -888,12 +888,12 @@ function AstroPong({ canvasHeight = 500 }: { canvasHeight?: number }) {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={canvasHeight}
-          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
         />
 
         {/* Score Ticker on Screen Overlay */}
@@ -904,7 +904,7 @@ function AstroPong({ canvasHeight = 500 }: { canvasHeight?: number }) {
         </div>
         
         {!isPlaying && !isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl p-6">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-none sm:rounded-xl p-6">
             <button
               onClick={() => setIsPlaying(true)}
               className="bg-white text-black font-semibold font-mono text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-white/90 shadow-xl active:scale-95 transition-all flex items-center gap-2"
@@ -916,7 +916,7 @@ function AstroPong({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
 
         {isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-none sm:rounded-xl">
             <Trophy className={`w-10 h-10 mb-2 ${playerScore >= 5 ? 'text-amber-400 animate-bounce' : 'text-white/30'}`} />
             <h3 className="font-heading text-xl font-bold text-white mb-1">{winnerMessage}</h3>
             <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Final Score: {playerScore} - {aiScore}</p>
@@ -936,7 +936,7 @@ function AstroPong({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 pb-4 px-4 sm:px-2 w-full max-w-[900px]">
         <span>Streak: <strong className="text-pink-400 font-heading text-xs sm:text-base">{winStreak}</strong></span>
         <span>Best Streak: <strong className="text-amber-400 font-heading text-xs sm:text-base">{bestStreak}</strong></span>
         <span className="hidden md:inline">Drag / move mouse vertically to steer</span>
@@ -1279,16 +1279,16 @@ function NeonDinoJump({ canvasHeight = 500 }: { canvasHeight?: number }) {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={canvasHeight}
-          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
         />
 
         {!isPlaying && !isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl p-6">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-none sm:rounded-xl p-6">
             <button
               onClick={() => {
                 setScore(0);
@@ -1303,7 +1303,7 @@ function NeonDinoJump({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
 
         {isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-none sm:rounded-xl">
             <h3 className="font-heading text-xl font-bold text-red-500 mb-1">System Crashed</h3>
             <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Score: {score} | Best: {highScore}</p>
             <button
@@ -1321,7 +1321,7 @@ function NeonDinoJump({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 pb-4 px-4 sm:px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-green-400 font-heading text-xs sm:text-base">{score}</strong></span>
         <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
         <span className="hidden md:inline">Tap / Press Space to jump</span>
@@ -1588,16 +1588,16 @@ function RetroCyberSnake({ canvasHeight = 500 }: { canvasHeight?: number }) {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={canvasHeight}
-          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
         />
 
         {!isPlaying && !isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl p-6">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-none sm:rounded-xl p-6">
             <button
               onClick={() => {
                 setScore(0);
@@ -1612,7 +1612,7 @@ function RetroCyberSnake({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
 
         {isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-none sm:rounded-xl">
             <h3 className="font-heading text-xl font-bold text-red-500 mb-1">Matrix Collapsed</h3>
             <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Total Bytes: {score} | Best: {highScore}</p>
             <button
@@ -1630,7 +1630,7 @@ function RetroCyberSnake({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 pb-4 px-4 sm:px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-amber-500 font-heading text-xs sm:text-base">{score}</strong></span>
         <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
         <span className="hidden md:inline">WASD / Swipe to navigate</span>
@@ -2111,16 +2111,16 @@ function NeonFruitSlasher({ canvasHeight = 500 }: { canvasHeight?: number }) {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={canvasHeight}
-          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block cursor-crosshair"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block cursor-crosshair"
         />
 
         {!isPlaying && !isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl p-6">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-none sm:rounded-xl p-6">
             <button
               onClick={() => {
                 setScore(0);
@@ -2136,7 +2136,7 @@ function NeonFruitSlasher({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
 
         {isGameOver && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-none sm:rounded-xl">
             <h3 className="font-heading text-xl font-bold text-red-500 mb-1">Blade Terminated</h3>
             <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Data Slashed: {score} | Best: {highScore}</p>
             <button
@@ -2155,7 +2155,7 @@ function NeonFruitSlasher({ canvasHeight = 500 }: { canvasHeight?: number }) {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 pb-4 px-4 sm:px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-red-400 font-heading text-xs sm:text-base">{score}</strong></span>
         <span>Lives: <strong className="text-red-500 font-heading text-xs sm:text-base">{'❤️'.repeat(Math.max(0, lives)) || '☠️'}</strong></span>
         <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
@@ -2307,7 +2307,7 @@ export default function GamesPage() {
 
         {/* High Contrast Arcade Monitor cabinet (Fills remaining width, larger dimensions) */}
         <div 
-          className="w-full md:max-w-[960px] p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border bg-[#121217] relative flex flex-col shadow-2xl transition-all duration-500"
+          className="w-full md:max-w-[960px] p-0 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border bg-[#121217] relative flex flex-col shadow-2xl transition-all duration-500"
           style={{
             borderColor: `${activeGame.accent}25`,
             boxShadow: `0 10px 40px -10px rgba(0,0,0,0.7), 0 0 30px ${activeGame.accent}08`,
@@ -2315,7 +2315,7 @@ export default function GamesPage() {
         >
           
           {/* Cabinet view header status */}
-          <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6 shrink-0 px-0">
+          <div className="flex items-center justify-between px-4 pt-4 sm:px-0 sm:pt-0 pb-4 border-b border-white/10 mb-4 sm:mb-6 shrink-0">
             <div className="flex items-center gap-2 sm:gap-3">
               <Tv 
                 className="w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-500 shrink-0" 
