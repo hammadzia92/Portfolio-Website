@@ -185,13 +185,17 @@ function NeonBrickBreaker({ canvasHeight = 500 }: { canvasHeight?: number }) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const paddle = { x: canvas.width / 2 - 60, width: 120, height: 12 };
-    const ball = { x: canvas.width / 2, y: canvas.height - 35, vx: 4.5, vy: -7, radius: 8 };
+    const isMobile = window.innerWidth < 640;
+    const paddleWidth = isMobile ? 180 : 120;
+    const paddleHeight = isMobile ? 18 : 12;
+    const paddle = { x: canvas.width / 2 - paddleWidth / 2, width: paddleWidth, height: paddleHeight };
+    const ballRadius = isMobile ? 13 : 8;
+    const ball = { x: canvas.width / 2, y: canvas.height - 35, vx: isMobile ? 5.5 : 4.5, vy: isMobile ? -8.5 : -7, radius: ballRadius };
     
     const rowCount = 4;
     const colCount = 8;
     const brickWidth = 92;
-    const brickHeight = 20;
+    const brickHeight = isMobile ? 28 : 20;
     const brickPadding = 12;
     const offsetTop = 60;
     const offsetLeft = (canvas.width - (colCount * (brickWidth + brickPadding) - brickPadding)) / 2;
@@ -437,19 +441,23 @@ function MultiBallChaos({ canvasHeight = 500 }: { canvasHeight?: number }) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const paddle = { x: canvas.width / 2 - 60, width: 120, height: 12 };
+    const isMobile = window.innerWidth < 640;
+    const paddleWidth = isMobile ? 180 : 120;
+    const paddleHeight = isMobile ? 18 : 12;
+    const paddle = { x: canvas.width / 2 - paddleWidth / 2, width: paddleWidth, height: paddleHeight };
+    const ballRadius = isMobile ? 13 : 8;
     
     // 3 Bouncing balls
     const balls = [
-      { x: canvas.width / 2, y: canvas.height - 35, vx: 4.5, vy: -7, radius: 8, active: true },
-      { x: canvas.width / 2 - 30, y: canvas.height - 45, vx: -3.5, vy: -7.5, radius: 8, active: true },
-      { x: canvas.width / 2 + 30, y: canvas.height - 45, vx: 5.5, vy: -6.5, radius: 8, active: true },
+      { x: canvas.width / 2, y: canvas.height - 35, vx: isMobile ? 5.5 : 4.5, vy: isMobile ? -8.5 : -7, radius: ballRadius, active: true },
+      { x: canvas.width / 2 - 30, y: canvas.height - 45, vx: isMobile ? -4.5 : -3.5, vy: isMobile ? -9 : -7.5, radius: ballRadius, active: true },
+      { x: canvas.width / 2 + 30, y: canvas.height - 45, vx: isMobile ? 6.5 : 5.5, vy: isMobile ? -8 : -6.5, radius: ballRadius, active: true },
     ];
     
     const rowCount = 4;
     const colCount = 8;
     const brickWidth = 92;
-    const brickHeight = 20;
+    const brickHeight = isMobile ? 28 : 20;
     const brickPadding = 12;
     const offsetTop = 60;
     const offsetLeft = (canvas.width - (colCount * (brickWidth + brickPadding) - brickPadding)) / 2;
@@ -708,11 +716,13 @@ function AstroPong({ canvasHeight = 500 }: { canvasHeight?: number }) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const pWidth = 12;
-    const pHeight = 90;
+    const isMobile = window.innerWidth < 640;
+    const pWidth = isMobile ? 18 : 12;
+    const pHeight = isMobile ? 130 : 90;
     const player = { x: 25, y: canvas.height / 2 - pHeight / 2 };
     const ai = { x: canvas.width - 25 - pWidth, y: canvas.height / 2 - pHeight / 2 };
-    const ball = { x: canvas.width / 2, y: canvas.height / 2, vx: 5.5, vy: 3, radius: 8 };
+    const ballRadius = isMobile ? 13 : 8;
+    const ball = { x: canvas.width / 2, y: canvas.height / 2, vx: isMobile ? 7 : 5.5, vy: isMobile ? 4 : 3, radius: ballRadius };
 
     let animationFrameId: number;
 
@@ -961,13 +971,15 @@ function NeonDinoJump({ canvasHeight = 500 }: { canvasHeight?: number }) {
     if (!ctx) return;
 
     const gravity = 0.65;
+    const isMobile = window.innerWidth < 640;
+    const dinoScale = isMobile ? 1.4 : 1.0;
     const dino = {
       x: 80,
-      y: canvas.height - 40 - 42,
-      width: 38,
-      height: 42,
+      y: canvas.height - 40 - 42 * dinoScale,
+      width: 38 * dinoScale,
+      height: 42 * dinoScale,
       vy: 0,
-      jumpForce: -12.5,
+      jumpForce: isMobile ? -14.5 : -12.5,
       isJumping: false,
     };
 
@@ -994,8 +1006,8 @@ function NeonDinoJump({ canvasHeight = 500 }: { canvasHeight?: number }) {
     let animationFrameId: number;
 
     const spawnObstacle = () => {
-      const height = Math.floor(Math.random() * 25) + 30; // 30 to 55
-      const width = Math.floor(Math.random() * 15) + 20; // 20 to 35
+      const height = (Math.floor(Math.random() * 25) + 30) * dinoScale; // 30 to 55
+      const width = (Math.floor(Math.random() * 15) + 20) * dinoScale; // 20 to 35
       obstacles.push({
         x: canvas.width,
         y: canvas.height - 40 - height,
@@ -1079,23 +1091,27 @@ function NeonDinoJump({ canvasHeight = 500 }: { canvasHeight?: number }) {
       const dx = dino.x;
       const dy = dino.y;
 
+      ctx.save();
+      ctx.translate(dx, dy);
+      ctx.scale(dinoScale, dinoScale);
+
       // Draw Dino (Stylized Neon T-Rex)
       ctx.beginPath();
       ctx.strokeStyle = '#22c55e'; // Neon green
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 3 / dinoScale;
       ctx.shadowBlur = 15;
       ctx.shadowColor = '#22c55e';
 
-      ctx.moveTo(dx + 12, dy); // Head top
-      ctx.lineTo(dx + 35, dy); // Head front/snout
-      ctx.lineTo(dx + 35, dy + 14); // Snout bottom
-      ctx.lineTo(dx + 26, dy + 14); // Mouth inside
-      ctx.lineTo(dx + 22, dy + 18); // Neck
-      ctx.lineTo(dx + 28, dy + 32); // Chest
-      ctx.lineTo(dx + 10, dy + 32); // Belly
-      ctx.lineTo(dx + 2, dy + 22); // Tail base
-      ctx.lineTo(dx, dy + 15); // Tail tip
-      ctx.lineTo(dx + 8, dy + 10); // Back
+      ctx.moveTo(12, 0); // Head top
+      ctx.lineTo(35, 0); // Head front/snout
+      ctx.lineTo(35, 14); // Snout bottom
+      ctx.lineTo(26, 14); // Mouth inside
+      ctx.lineTo(22, 18); // Neck
+      ctx.lineTo(28, 32); // Chest
+      ctx.lineTo(10, 32); // Belly
+      ctx.lineTo(2, 22); // Tail base
+      ctx.lineTo(0, 15); // Tail tip
+      ctx.lineTo(8, 10); // Back
       ctx.closePath();
       ctx.stroke();
       ctx.fillStyle = 'rgba(34, 197, 94, 0.15)';
@@ -1105,25 +1121,27 @@ function NeonDinoJump({ canvasHeight = 500 }: { canvasHeight?: number }) {
       // Draw Legs
       const legOffset = Math.sin(legAngle) * 7;
       ctx.strokeStyle = '#22c55e';
-      ctx.lineWidth = 3;
+      ctx.lineWidth = 3 / dinoScale;
       
       // Leg 1
       ctx.beginPath();
-      ctx.moveTo(dx + 14, dy + 32);
-      ctx.lineTo(dino.isJumping ? dx + 10 : dx + 14 - legOffset, dy + 40);
+      ctx.moveTo(14, 32);
+      ctx.lineTo(dino.isJumping ? 10 : 14 - legOffset, 40);
       ctx.stroke();
 
       // Leg 2
       ctx.beginPath();
-      ctx.moveTo(dx + 22, dy + 32);
-      ctx.lineTo(dino.isJumping ? dx + 26 : dx + 22 + legOffset, dy + 40);
+      ctx.moveTo(22, 32);
+      ctx.lineTo(dino.isJumping ? 26 : 22 + legOffset, 40);
       ctx.stroke();
 
       // Small eye
       ctx.fillStyle = '#ffffff';
       ctx.beginPath();
-      ctx.arc(dx + 26, dy + 5, 2, 0, Math.PI * 2);
+      ctx.arc(26, 5, 2, 0, Math.PI * 2);
       ctx.fill();
+
+      ctx.restore();
 
       // 5. Update and Draw Particles
       particles.forEach((p, idx) => {
@@ -1345,8 +1363,9 @@ function RetroCyberSnake({ canvasHeight = 500 }: { canvasHeight?: number }) {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const gridWidth = 45;
-    const blockSize = 20;
+    const isMobile = window.innerWidth < 640;
+    const blockSize = isMobile ? 30 : 20;
+    const gridWidth = Math.floor(900 / blockSize);
     const gridHeight = Math.floor(canvasHeight / blockSize);
 
     let snake = [
@@ -1484,11 +1503,11 @@ function RetroCyberSnake({ canvasHeight = 500 }: { canvasHeight?: number }) {
           ctx.fillStyle = '#000000';
           ctx.beginPath();
           if (direction === 'RIGHT' || direction === 'LEFT') {
-            ctx.arc(segment.x * blockSize + 10, segment.y * blockSize + 6, 2, 0, Math.PI * 2);
-            ctx.arc(segment.x * blockSize + 10, segment.y * blockSize + 14, 2, 0, Math.PI * 2);
+            ctx.arc(segment.x * blockSize + (blockSize * 0.5), segment.y * blockSize + (blockSize * 0.3), 2, 0, Math.PI * 2);
+            ctx.arc(segment.x * blockSize + (blockSize * 0.5), segment.y * blockSize + (blockSize * 0.7), 2, 0, Math.PI * 2);
           } else {
-            ctx.arc(segment.x * blockSize + 6, segment.y * blockSize + 10, 2, 0, Math.PI * 2);
-            ctx.arc(segment.x * blockSize + 14, segment.y * blockSize + 10, 2, 0, Math.PI * 2);
+            ctx.arc(segment.x * blockSize + (blockSize * 0.3), segment.y * blockSize + (blockSize * 0.5), 2, 0, Math.PI * 2);
+            ctx.arc(segment.x * blockSize + (blockSize * 0.7), segment.y * blockSize + (blockSize * 0.5), 2, 0, Math.PI * 2);
           }
           ctx.fill();
         }
@@ -1655,6 +1674,8 @@ function NeonFruitSlasher({ canvasHeight = 500 }: { canvasHeight?: number }) {
     if (!ctx) return;
 
     const gravity = 0.22;
+    const isMobile = window.innerWidth < 640;
+    const radiusScale = isMobile ? 1.4 : 1.0;
     
     interface SlasherItem {
       id: number;
@@ -1695,7 +1716,7 @@ function NeonFruitSlasher({ canvasHeight = 500 }: { canvasHeight?: number }) {
 
     const spawnItem = (isBombChance = false) => {
       itemIdCounter++;
-      const radius = isBombChance ? 24 : Math.random() * 6 + 22;
+      const radius = (isBombChance ? 24 : Math.random() * 6 + 22) * radiusScale;
       const x = Math.random() * (canvas.width - 200) + 100;
       const y = canvas.height + radius;
       
@@ -1789,13 +1810,13 @@ function NeonFruitSlasher({ canvasHeight = 500 }: { canvasHeight?: number }) {
             for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 4) {
               ctx.beginPath();
               ctx.moveTo(item.x + Math.cos(angle) * item.radius, item.y + Math.sin(angle) * item.radius);
-              ctx.lineTo(item.x + Math.cos(angle) * (item.radius + 6), item.y + Math.sin(angle) * (item.radius + 6));
+              ctx.lineTo(item.x + Math.cos(angle) * (item.radius + 6 * radiusScale), item.y + Math.sin(angle) * (item.radius + 6 * radiusScale));
               ctx.stroke();
             }
 
             ctx.fillStyle = (Date.now() % 250 > 125) ? '#ffffff' : '#ef4444';
             ctx.beginPath();
-            ctx.arc(item.x, item.y, 7, 0, Math.PI * 2);
+            ctx.arc(item.x, item.y, 7 * radiusScale, 0, Math.PI * 2);
             ctx.fill();
           } else {
             ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
@@ -1807,16 +1828,16 @@ function NeonFruitSlasher({ canvasHeight = 500 }: { canvasHeight?: number }) {
             ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 1.5;
             ctx.beginPath();
-            ctx.arc(item.x, item.y, item.radius - 6, 0, Math.PI * 2);
+            ctx.arc(item.x, item.y, item.radius - 6 * radiusScale, 0, Math.PI * 2);
             ctx.stroke();
 
             ctx.fillStyle = item.color;
             ctx.beginPath();
-            ctx.arc(item.x, item.y, 4, 0, Math.PI * 2);
+            ctx.arc(item.x, item.y, 4 * radiusScale, 0, Math.PI * 2);
             ctx.fill();
 
             ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-            ctx.font = 'bold 8px monospace';
+            ctx.font = `bold ${Math.floor(8 * radiusScale)}px monospace`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(item.label, item.x, item.y);
