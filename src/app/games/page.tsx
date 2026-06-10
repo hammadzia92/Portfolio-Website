@@ -334,12 +334,12 @@ function NeonBrickBreaker() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={500}
-          className="w-full h-auto bg-[#070709] rounded-xl block"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
         />
         
         {!isPlaying && !isGameOver && !isGameWon && (
@@ -394,10 +394,10 @@ function NeonBrickBreaker() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
-        <span>Score: <strong className="text-cyan-400 font-heading text-base">{score}</strong></span>
-        <span>High Score: <strong className="text-amber-400 font-heading text-base">{highScore}</strong></span>
-        <span>Drag / move mouse to play</span>
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+        <span>Score: <strong className="text-cyan-400 font-heading text-xs sm:text-base">{score}</strong></span>
+        <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
+        <span className="hidden md:inline">Drag / move mouse to play</span>
       </div>
     </div>
   );
@@ -593,12 +593,12 @@ function MultiBallChaos() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={500}
-          className="w-full h-auto bg-[#070709] rounded-xl block"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
         />
         
         {!isPlaying && !isGameOver && !isGameWon && (
@@ -653,10 +653,10 @@ function MultiBallChaos() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
-        <span>Score: <strong className="text-violet-400 font-heading text-base">{score}</strong></span>
-        <span>High Score: <strong className="text-amber-400 font-heading text-base">{highScore}</strong></span>
-        <span>Drag / move mouse to play</span>
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+        <span>Score: <strong className="text-violet-400 font-heading text-xs sm:text-base">{score}</strong></span>
+        <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
+        <span className="hidden md:inline">Drag / move mouse to play</span>
       </div>
     </div>
   );
@@ -878,12 +878,12 @@ function AstroPong() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={500}
-          className="w-full h-auto bg-[#070709] rounded-xl block"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
         />
 
         {/* Score Ticker on Screen Overlay */}
@@ -926,10 +926,10 @@ function AstroPong() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
-        <span>Streak: <strong className="text-pink-400 font-heading text-base">{winStreak}</strong></span>
-        <span>Best Streak: <strong className="text-amber-400 font-heading text-base">{bestStreak}</strong></span>
-        <span>Drag / move mouse vertically to steer</span>
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+        <span>Streak: <strong className="text-pink-400 font-heading text-xs sm:text-base">{winStreak}</strong></span>
+        <span>Best Streak: <strong className="text-amber-400 font-heading text-xs sm:text-base">{bestStreak}</strong></span>
+        <span className="hidden md:inline">Drag / move mouse vertically to steer</span>
       </div>
     </div>
   );
@@ -1261,12 +1261,12 @@ function NeonDinoJump() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={500}
-          className="w-full h-auto bg-[#070709] rounded-xl block"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
         />
 
         {!isPlaying && !isGameOver && (
@@ -1303,10 +1303,10 @@ function NeonDinoJump() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
-        <span>Score: <strong className="text-green-400 font-heading text-base">{score}</strong></span>
-        <span>High Score: <strong className="text-amber-400 font-heading text-base">{highScore}</strong></span>
-        <span>Tap / Press Space to jump</span>
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+        <span>Score: <strong className="text-green-400 font-heading text-xs sm:text-base">{score}</strong></span>
+        <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
+        <span className="hidden md:inline">Tap / Press Space to jump</span>
       </div>
     </div>
   );
@@ -1569,12 +1569,12 @@ function RetroCyberSnake() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={500}
-          className="w-full h-auto bg-[#070709] rounded-xl block"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
         />
 
         {!isPlaying && !isGameOver && (
@@ -1611,10 +1611,10 @@ function RetroCyberSnake() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
-        <span>Score: <strong className="text-amber-500 font-heading text-base">{score}</strong></span>
-        <span>High Score: <strong className="text-amber-400 font-heading text-base">{highScore}</strong></span>
-        <span>WASD / Swipe to navigate</span>
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+        <span>Score: <strong className="text-amber-500 font-heading text-xs sm:text-base">{score}</strong></span>
+        <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
+        <span className="hidden md:inline">WASD / Swipe to navigate</span>
       </div>
     </div>
   );
@@ -2088,12 +2088,12 @@ function NeonFruitSlasher() {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
           height={500}
-          className="w-full h-auto bg-[#070709] rounded-xl block cursor-crosshair"
+          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block cursor-crosshair"
         />
 
         {!isPlaying && !isGameOver && (
@@ -2132,11 +2132,11 @@ function NeonFruitSlasher() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
-        <span>Score: <strong className="text-red-400 font-heading text-base">{score}</strong></span>
-        <span>Lives: <strong className="text-red-500 font-heading text-base">{'❤️'.repeat(Math.max(0, lives)) || '☠️'}</strong></span>
-        <span>High Score: <strong className="text-amber-400 font-heading text-base">{highScore}</strong></span>
-        <span>Drag mouse / finger to slice</span>
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+        <span>Score: <strong className="text-red-400 font-heading text-xs sm:text-base">{score}</strong></span>
+        <span>Lives: <strong className="text-red-500 font-heading text-xs sm:text-base">{'❤️'.repeat(Math.max(0, lives)) || '☠️'}</strong></span>
+        <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
+        <span className="hidden md:inline">Drag mouse / finger to slice</span>
       </div>
     </div>
   );
@@ -2163,18 +2163,20 @@ export default function GamesPage() {
 
       {/* Navigation Header */}
       <header className="relative z-10 w-full border-b border-white/10 bg-[#0a0a0c]/90 backdrop-blur-md">
-        <div className="max-w-[1200px] mx-auto px-6 h-16 flex justify-between items-center">
-          <div className="flex items-center gap-4">
+        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 h-16 flex justify-between items-center">
+          <div className="flex items-center gap-2 sm:gap-4">
             <a
               href="/?mode=portfolio"
-              className="group flex items-center gap-2 font-heading text-[10px] uppercase tracking-widest text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-full px-4 py-2 transition-all duration-200 bg-white/[0.02]"
+              className="group flex items-center gap-1.5 sm:gap-2 font-heading text-[10px] uppercase tracking-widest text-white/60 hover:text-white border border-white/15 hover:border-white/30 rounded-full px-3 sm:px-4 py-1.5 sm:py-2 transition-all duration-200 bg-white/[0.02]"
             >
               <ArrowLeft className="w-3.5 h-3.5 transition-transform duration-200 group-hover:-translate-x-0.5 text-white/80" />
-              Back to Portfolio
+              <span className="hidden xs:inline">Back to Portfolio</span>
+              <span className="xs:hidden">Back</span>
             </a>
-            <div className="w-px h-4 bg-white/10" />
-            <span className="font-heading text-sm font-bold text-white tracking-[0.25em] uppercase select-none">
-              HAMMAD.DESIGN <span className="text-white/30 font-normal">/</span> <span className="font-extrabold tracking-[0.2em] transition-colors duration-500" style={{ color: activeGame.accent }}>ARCADE</span>
+            <div className="hidden xs:block w-px h-4 bg-white/10" />
+            <span className="font-heading text-[10px] sm:text-xs md:text-sm font-bold text-white tracking-[0.15em] sm:tracking-[0.25em] uppercase select-none">
+              <span className="hidden sm:inline">HAMMAD.DESIGN <span className="text-white/30 font-normal">/</span> </span>
+              <span className="font-extrabold tracking-[0.2em] transition-colors duration-500" style={{ color: activeGame.accent }}>ARCADE</span>
             </span>
           </div>
 
@@ -2182,7 +2184,7 @@ export default function GamesPage() {
             href={CONTACT_DATA.resume}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-white text-black font-semibold font-heading text-[10px] uppercase tracking-widest rounded-full px-5.5 py-2 hover:bg-white/90 hover:shadow-[0_0_15px_rgba(255,255,255,0.25)] transition-all duration-200 select-none"
+            className="bg-white text-black font-semibold font-heading text-[8.5px] sm:text-[10px] uppercase tracking-widest rounded-full px-3.5 sm:px-5.5 py-1.5 sm:py-2 hover:bg-white/90 hover:shadow-[0_0_15px_rgba(255,255,255,0.25)] transition-all duration-200 select-none"
           >
             Resume
           </a>
@@ -2190,11 +2192,11 @@ export default function GamesPage() {
       </header>
 
       {/* Main Workspace (Stacked Vertical Layout for Larger Canvas Area) */}
-      <main className="flex-1 max-w-[1200px] w-full mx-auto px-3 md:px-6 py-4 relative z-10 flex flex-col items-center gap-6">
+      <main className="flex-1 max-w-[1200px] w-full mx-auto px-0 sm:px-6 py-4 relative z-10 flex flex-col items-center gap-6">
         
         {/* Game deck selector: Horizontal list at the top */}
         <div className="w-full max-w-[960px] select-none">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+          <div className="flex overflow-x-auto md:grid md:grid-cols-6 gap-3 pb-3 md:pb-0 w-full select-none scrollbar-none snap-x scroll-smooth">
             {PREMIUM_GAMES.map((game) => {
               const IconComponent = game.icon;
               const isSelected = activeGameId === game.id;
@@ -2203,7 +2205,7 @@ export default function GamesPage() {
                 <button
                   key={game.id}
                   onClick={() => setActiveGameId(game.id)}
-                  className="text-center p-6 rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center gap-3.5 group cursor-pointer relative overflow-hidden"
+                  className="flex-shrink-0 w-[110px] sm:w-[130px] md:w-auto snap-center text-center p-3 md:p-6 rounded-xl md:rounded-2xl border transition-all duration-300 flex flex-col items-center justify-center gap-2 md:gap-3.5 group cursor-pointer relative overflow-hidden"
                   style={{
                     backgroundColor: isSelected ? 'rgba(255,255,255,0.04)' : '#121217',
                     borderColor: isSelected ? game.accent : 'rgba(255,255,255,0.05)',
@@ -2219,7 +2221,7 @@ export default function GamesPage() {
                   />
 
                   <div 
-                    className="w-12 h-12 rounded-xl border flex items-center justify-center transition-all duration-300"
+                    className="w-9 h-9 md:w-12 md:h-12 rounded-lg md:rounded-xl border flex items-center justify-center transition-all duration-300"
                     style={{
                       backgroundColor: isSelected ? `${game.accent}20` : 'rgba(255,255,255,0.02)',
                       borderColor: isSelected ? `${game.accent}40` : 'rgba(255,255,255,0.1)',
@@ -2227,21 +2229,21 @@ export default function GamesPage() {
                       boxShadow: isSelected ? `0 0 15px ${game.accent}20` : 'none',
                     }}
                   >
-                    <IconComponent className="w-5.5 h-5.5 transition-transform duration-300 group-hover:scale-110" />
+                    <IconComponent className="w-4 h-4 md:w-5.5 md:h-5.5 transition-transform duration-300 group-hover:scale-110" />
                   </div>
 
                   <div className="flex flex-col items-center gap-1">
                     <h4 
-                      className="font-heading text-[11px] font-bold tracking-widest uppercase transition-colors duration-200"
+                      className="font-heading text-[9.5px] md:text-[11px] font-bold tracking-widest uppercase transition-colors duration-200"
                       style={{ color: isSelected ? '#ffffff' : 'rgba(255,255,255,0.6)' }}
                     >
                       {game.title}
                     </h4>
                     <p 
-                      className="text-[9px] font-mono transition-colors duration-200"
+                      className="text-[7.5px] md:text-[9px] font-mono transition-colors duration-200"
                       style={{ color: isSelected ? game.accent : 'rgba(255,255,255,0.3)' }}
                     >
-                      {isSelected ? 'ACTIVE CABINET' : 'CLICK TO PLAY'}
+                      {isSelected ? 'ACTIVE' : 'PLAY'}
                     </p>
                   </div>
                 </button>
@@ -2252,7 +2254,7 @@ export default function GamesPage() {
 
         {/* High Contrast Arcade Monitor cabinet (Fills remaining width, larger dimensions) */}
         <div 
-          className="w-full max-w-[960px] p-3 md:p-8 rounded-2xl md:rounded-3xl border bg-[#121217] relative flex flex-col shadow-2xl transition-all duration-500"
+          className="w-full md:max-w-[960px] p-0 sm:p-6 md:p-8 rounded-none sm:rounded-3xl border-x-0 sm:border bg-[#121217] relative flex flex-col shadow-2xl transition-all duration-500"
           style={{
             borderColor: `${activeGame.accent}25`,
             boxShadow: `0 10px 40px -10px rgba(0,0,0,0.7), 0 0 30px ${activeGame.accent}08`,
@@ -2260,14 +2262,14 @@ export default function GamesPage() {
         >
           
           {/* Cabinet view header status */}
-          <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6 shrink-0">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6 shrink-0 px-4 sm:px-0">
+            <div className="flex items-center gap-2 sm:gap-3">
               <Tv 
-                className="w-5 h-5 transition-colors duration-500" 
+                className="w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-500 shrink-0" 
                 style={{ color: activeGame.accent }}
               />
               <div>
-                <h2 className="font-heading text-lg md:text-xl font-bold text-white tracking-wide">
+                <h2 className="font-heading text-sm sm:text-lg md:text-xl font-bold text-white tracking-wide">
                   {activeGameId === 'breaker' && 'Classic Brick Breaker'}
                   {activeGameId === 'multiball' && 'Multi-Ball Chaos'}
                   {activeGameId === 'pong' && 'Astro Pong (vs AI)'}
@@ -2278,7 +2280,7 @@ export default function GamesPage() {
               </div>
             </div>
             
-            <div className="font-mono text-[9px] uppercase tracking-widest text-white/45 flex items-center gap-1">
+            <div className="font-mono text-[8px] sm:text-[9px] uppercase tracking-widest text-white/45 flex items-center gap-1 shrink-0">
               <span 
                 className="w-1.5 h-1.5 rounded-full animate-pulse mr-1 transition-colors duration-500" 
                 style={{ backgroundColor: activeGame.accent }}
