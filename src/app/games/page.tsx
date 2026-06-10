@@ -12,6 +12,7 @@ import {
   Tv,
   Flame,
   Zap,
+  Sword,
 } from "lucide-react";
 import { CONTACT_DATA } from "@/components/ArtboardContent";
 
@@ -139,6 +140,14 @@ const PREMIUM_GAMES: GameItem[] = [
     icon: Zap,
     color: 'text-amber-400 border-amber-500/20 bg-amber-500/5',
     accent: '#f59e0b'
+  },
+  {
+    id: 'slice',
+    title: 'Cyber Slasher',
+    desc: 'Slash floating data spheres with your glowing blade trail. Avoid slicing warning module bombs.',
+    icon: Sword,
+    color: 'text-red-400 border-red-500/20 bg-red-500/5',
+    accent: '#ef4444'
   }
 ];
 
@@ -1612,6 +1621,528 @@ function RetroCyberSnake() {
 }
 
 // =========================================================
+// 🕹️ MODULE 6: NEON FRUIT SLASHER COMPONENT (CYBER SLICE)
+// =========================================================
+function NeonFruitSlasher() {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [score, setScore] = useState(0);
+  const [highScore, setHighScore] = useState(0);
+  const [lives, setLives] = useState(3);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [resetTrigger, setResetTrigger] = useState(0);
+
+  // Load high score from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('slasher_highscore');
+    if (saved) {
+      setHighScore(parseInt(saved, 10));
+    }
+  }, []);
+
+  // Sync high score whenever score changes
+  useEffect(() => {
+    if (score > highScore) {
+      setHighScore(score);
+      localStorage.setItem('slasher_highscore', score.toString());
+    }
+  }, [score, highScore]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const gravity = 0.22;
+    
+    interface SlasherItem {
+      id: number;
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+      radius: number;
+      color: string;
+      label: string;
+      isBomb: boolean;
+      sliced: boolean;
+      halves?: {
+        x1: number; y1: number; vx1: number; vy1: number;
+        x2: number; y2: number; vx2: number; vy2: number;
+        angle: number; rotSpeed: number;
+      };
+    }
+
+    let items: SlasherItem[] = [];
+    let itemIdCounter = 0;
+    let spawnTimer = 0;
+    let scoreVal = 0;
+    let livesVal = 3;
+
+    let trail: { x: number; y: number; time: number }[] = [];
+    let isSlicing = false;
+
+    let particles: { x: number; y: number; vx: number; vy: number; radius: number; color: string; alpha: number }[] = [];
+
+    const fruitsConfig = [
+      { color: '#ef4444', label: 'APPLE' },
+      { color: '#22c55e', label: 'MELON' },
+      { color: '#f59e0b', label: 'ORANGE' },
+      { color: '#3b82f6', label: 'BERRY' },
+      { color: '#eab308', label: 'LEMON' }
+    ];
+
+    const spawnItem = (isBombChance = false) => {
+      itemIdCounter++;
+      const radius = isBombChance ? 24 : Math.random() * 6 + 22;
+      const x = Math.random() * (canvas.width - 200) + 100;
+      const y = canvas.height + radius;
+      
+      const targetX = canvas.width / 2;
+      const xDiff = targetX - x;
+      const vx = xDiff * 0.01 + (Math.random() - 0.5) * 1.5;
+      const vy = -(Math.random() * 4 + 11.5);
+
+      if (isBombChance) {
+        items.push({
+          id: itemIdCounter,
+          x, y, vx, vy, radius,
+          color: '#ef4444',
+          label: 'BOMB',
+          isBomb: true,
+          sliced: false
+        });
+      } else {
+        const conf = fruitsConfig[Math.floor(Math.random() * fruitsConfig.length)];
+        items.push({
+          id: itemIdCounter,
+          x, y, vx, vy, radius,
+          color: conf.color,
+          label: conf.label,
+          isBomb: false,
+          sliced: false
+        });
+      }
+    };
+
+    let animationFrameId: number;
+
+    const render = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.01)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < canvas.width; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+      }
+      for (let y = 0; y < canvas.height; y += 40) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+      }
+
+      if (isPlaying && !isGameOver) {
+        spawnTimer++;
+        const spawnRate = Math.max(45, 80 - Math.floor(scoreVal / 500));
+        if (spawnTimer >= spawnRate) {
+          const count = Math.random() > 0.75 ? 2 : 1;
+          for (let i = 0; i < count; i++) {
+            const isBomb = Math.random() < 0.22;
+            spawnItem(isBomb);
+          }
+          spawnTimer = 0;
+        }
+      }
+
+      items.forEach((item, index) => {
+        if (isPlaying && !isGameOver) {
+          item.vy += gravity;
+          item.x += item.vx;
+          item.y += item.vy;
+
+          if (item.sliced && item.halves) {
+            item.halves.x1 += item.halves.vx1;
+            item.halves.y1 += item.halves.vy1 + gravity;
+            item.halves.x2 += item.halves.vx2;
+            item.halves.y2 += item.halves.vy2 + gravity;
+            item.halves.angle += item.halves.rotSpeed;
+          }
+        }
+
+        if (!item.sliced) {
+          ctx.beginPath();
+          ctx.lineWidth = 3;
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = item.color;
+          ctx.strokeStyle = item.color;
+
+          if (item.isBomb) {
+            ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fillStyle = 'rgba(239, 68, 68, 0.15)';
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 2;
+            for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 4) {
+              ctx.beginPath();
+              ctx.moveTo(item.x + Math.cos(angle) * item.radius, item.y + Math.sin(angle) * item.radius);
+              ctx.lineTo(item.x + Math.cos(angle) * (item.radius + 6), item.y + Math.sin(angle) * (item.radius + 6));
+              ctx.stroke();
+            }
+
+            ctx.fillStyle = (Date.now() % 250 > 125) ? '#ffffff' : '#ef4444';
+            ctx.beginPath();
+            ctx.arc(item.x, item.y, 7, 0, Math.PI * 2);
+            ctx.fill();
+          } else {
+            ctx.arc(item.x, item.y, item.radius, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fillStyle = `${item.color}22`;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(item.x, item.y, item.radius - 6, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.fillStyle = item.color;
+            ctx.beginPath();
+            ctx.arc(item.x, item.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            ctx.font = 'bold 8px monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(item.label, item.x, item.y);
+          }
+        } else if (item.halves) {
+          ctx.save();
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = item.color;
+          ctx.strokeStyle = item.color;
+          ctx.fillStyle = `${item.color}22`;
+          ctx.lineWidth = 2.5;
+
+          ctx.translate(item.halves.x1, item.halves.y1);
+          ctx.rotate(item.halves.angle);
+          ctx.beginPath();
+          ctx.arc(0, 0, item.radius, Math.PI, 0);
+          ctx.closePath();
+          ctx.stroke();
+          ctx.fill();
+
+          ctx.strokeStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.moveTo(-item.radius, 0);
+          ctx.lineTo(item.radius, 0);
+          ctx.stroke();
+
+          ctx.restore();
+
+          ctx.save();
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = item.color;
+          ctx.strokeStyle = item.color;
+          ctx.fillStyle = `${item.color}22`;
+          ctx.lineWidth = 2.5;
+
+          ctx.translate(item.halves.x2, item.halves.y2);
+          ctx.rotate(item.halves.angle);
+          ctx.beginPath();
+          ctx.arc(0, 0, item.radius, 0, Math.PI);
+          ctx.closePath();
+          ctx.stroke();
+          ctx.fill();
+
+          ctx.strokeStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.moveTo(-item.radius, 0);
+          ctx.lineTo(item.radius, 0);
+          ctx.stroke();
+
+          ctx.restore();
+        }
+
+        if (item.y - item.radius > canvas.height + 40) {
+          if (!item.isBomb && !item.sliced && isPlaying && !isGameOver) {
+            livesVal--;
+            setLives(livesVal);
+            if (livesVal <= 0) {
+              setIsGameOver(true);
+              setIsPlaying(false);
+            }
+          }
+          items.splice(index, 1);
+        }
+      });
+
+      particles.forEach((p, idx) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.08;
+        p.alpha -= 0.025;
+        if (p.alpha <= 0) {
+          particles.splice(idx, 1);
+          return;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color.replace('0.8', p.alpha.toFixed(2));
+        ctx.fill();
+      });
+
+      if (trail.length > 1) {
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = '#ffffff';
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ctx.moveTo(trail[0].x, trail[0].y);
+        for (let i = 1; i < trail.length; i++) {
+          ctx.lineTo(trail[i].x, trail[i].y);
+        }
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = '#3b82f6';
+        ctx.strokeStyle = 'rgba(59, 130, 246, 0.4)';
+        ctx.lineWidth = 8;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      const now = Date.now();
+      trail = trail.filter(p => now - p.time < 120);
+
+      animationFrameId = requestAnimationFrame(render);
+    };
+
+    render();
+
+    const checkSlice = (p1: { x: number; y: number }, p2: { x: number; y: number }) => {
+      items.forEach(item => {
+        if (item.sliced) return;
+
+        const minX = Math.min(p1.x, p2.x) - 10;
+        const maxX = Math.max(p1.x, p2.x) + 10;
+        const minY = Math.min(p1.y, p2.y) - 10;
+        const maxY = Math.max(p1.y, p2.y) + 10;
+        if (item.x < minX || item.x > maxX || item.y < minY || item.y > maxY) {
+          return;
+        }
+
+        const A = item.x - p1.x;
+        const B = item.y - p1.y;
+        const C = p2.x - p1.x;
+        const D = p2.y - p1.y;
+
+        const dot = A * C + B * D;
+        const lenSq = C * C + D * D;
+        let param = -1;
+        if (lenSq !== 0) param = dot / lenSq;
+
+        let xx, yy;
+        if (param < 0) {
+          xx = p1.x;
+          yy = p1.y;
+        } else if (param > 1) {
+          xx = p2.x;
+          yy = p2.y;
+        } else {
+          xx = p1.x + param * C;
+          yy = p1.y + param * D;
+        }
+
+        const dx = item.x - xx;
+        const dy = item.y - yy;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < item.radius + 4) {
+          item.sliced = true;
+
+          if (item.isBomb) {
+            setIsGameOver(true);
+            setIsPlaying(false);
+
+            for (let i = 0; i < 35; i++) {
+              particles.push({
+                x: item.x,
+                y: item.y,
+                vx: (Math.random() - 0.5) * 12,
+                vy: (Math.random() - 0.5) * 12,
+                radius: Math.random() * 4 + 2,
+                color: 'rgba(239, 68, 68, 0.8)',
+                alpha: 1
+              });
+            }
+          } else {
+            scoreVal += 100;
+            setScore(scoreVal);
+
+            const angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+            const sliceNormX = -Math.sin(angle);
+            const sliceNormY = Math.cos(angle);
+            const ejectForce = Math.random() * 2 + 2;
+
+            item.halves = {
+              x1: item.x, y1: item.y,
+              vx1: item.vx + sliceNormX * ejectForce,
+              vy1: item.vy + sliceNormY * ejectForce,
+              x2: item.x, y2: item.y,
+              vx2: item.vx - sliceNormX * ejectForce,
+              vy2: item.vy - sliceNormY * ejectForce,
+              angle: 0,
+              rotSpeed: (Math.random() - 0.5) * 0.15
+            };
+
+            for (let i = 0; i < 15; i++) {
+              particles.push({
+                x: item.x,
+                y: item.y,
+                vx: (Math.random() - 0.5) * 7,
+                vy: (Math.random() - 0.5) * 7 - 2,
+                radius: Math.random() * 3 + 1,
+                color: `${item.color}cc`,
+                alpha: 1
+              });
+            }
+          }
+        }
+      });
+    };
+
+    const handlePointerStart = (x: number, y: number) => {
+      isSlicing = true;
+      trail = [{ x, y, time: Date.now() }];
+    };
+
+    const handlePointerMove = (x: number, y: number) => {
+      if (!isSlicing) return;
+      const newPoint = { x, y, time: Date.now() };
+      trail.push(newPoint);
+      if (trail.length > 1) {
+        checkSlice(trail[trail.length - 2], newPoint);
+      }
+    };
+
+    const handlePointerEnd = () => {
+      isSlicing = false;
+      trail = [];
+    };
+
+    const onMouseDown = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      handlePointerStart((e.clientX - rect.left) * scaleX, (e.clientY - rect.top) * scaleY);
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      handlePointerMove((e.clientX - rect.left) * scaleX, (e.clientY - rect.top) * scaleY);
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 0) return;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      handlePointerStart((e.touches[0].clientX - rect.left) * scaleX, (e.touches[0].clientY - rect.top) * scaleY);
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 0) return;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      handlePointerMove((e.touches[0].clientX - rect.left) * scaleX, (e.touches[0].clientY - rect.top) * scaleY);
+    };
+
+    canvas.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', handlePointerEnd);
+
+    canvas.addEventListener('touchstart', onTouchStart, { passive: true });
+    canvas.addEventListener('touchmove', onTouchMove, { passive: true });
+    canvas.addEventListener('touchend', handlePointerEnd);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      canvas.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', handlePointerEnd);
+      canvas.removeEventListener('touchstart', onTouchStart);
+      canvas.removeEventListener('touchmove', onTouchMove);
+      canvas.removeEventListener('touchend', handlePointerEnd);
+    };
+  }, [isPlaying, resetTrigger, isGameOver]);
+
+  return (
+    <div className="w-full flex flex-col items-center">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
+        <canvas
+          ref={canvasRef}
+          width={900}
+          height={500}
+          className="w-full h-auto bg-[#070709] rounded-xl block cursor-crosshair"
+        />
+
+        {!isPlaying && !isGameOver && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm rounded-xl p-6">
+            <button
+              onClick={() => {
+                setScore(0);
+                setLives(3);
+                setIsPlaying(true);
+              }}
+              className="bg-white text-black font-semibold font-mono text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-white/90 shadow-xl active:scale-95 transition-all flex items-center gap-2"
+            >
+              <Play className="w-4 h-4 fill-black" /> Boot Cyber Slice
+            </button>
+            <p className="font-mono text-[9px] text-white/50 uppercase tracking-widest mt-4">Click and Drag or Swipe to Slash fruits. Avoid Spiky Red Bombs!</p>
+          </div>
+        )}
+
+        {isGameOver && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/85 backdrop-blur-sm rounded-xl">
+            <h3 className="font-heading text-xl font-bold text-red-500 mb-1">Blade Terminated</h3>
+            <p className="font-mono text-xs text-white/50 uppercase tracking-widest mb-5">Data Slashed: {score} | Best: {highScore}</p>
+            <button
+              onClick={() => {
+                setScore(0);
+                setLives(3);
+                setIsGameOver(false);
+                setIsPlaying(true);
+                setResetTrigger(p => p + 1);
+              }}
+              className="font-mono text-[10px] uppercase tracking-widest border border-white/20 hover:border-white/40 bg-white/[0.02] hover:bg-white/[0.05] rounded-full px-6 py-3 transition-all text-white flex items-center gap-1.5"
+            >
+              <RotateCcw className="w-3.5 h-3.5" /> Reload Blade
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="flex justify-between items-center font-mono text-[10px] text-white/50 uppercase tracking-widest mt-4 px-2 w-full max-w-[900px]">
+        <span>Score: <strong className="text-red-400 font-heading text-base">{score}</strong></span>
+        <span>Lives: <strong className="text-red-500 font-heading text-base">{'❤️'.repeat(Math.max(0, lives)) || '☠️'}</strong></span>
+        <span>High Score: <strong className="text-amber-400 font-heading text-base">{highScore}</strong></span>
+        <span>Drag mouse / finger to slice</span>
+      </div>
+    </div>
+  );
+}
+
+// =========================================================
 // 🕹️ MAIN PAGE COMPONENT
 // =========================================================
 export default function GamesPage() {
@@ -1663,7 +2194,7 @@ export default function GamesPage() {
         
         {/* Game deck selector: Horizontal list at the top */}
         <div className="w-full max-w-[960px] select-none">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
             {PREMIUM_GAMES.map((game) => {
               const IconComponent = game.icon;
               const isSelected = activeGameId === game.id;
@@ -1742,6 +2273,7 @@ export default function GamesPage() {
                   {activeGameId === 'pong' && 'Astro Pong (vs AI)'}
                   {activeGameId === 'jump' && 'Neon Astro Run'}
                   {activeGameId === 'snake' && 'Retro Cyber Snake'}
+                  {activeGameId === 'slice' && 'Cyber Slasher'}
                 </h2>
               </div>
             </div>
@@ -1762,6 +2294,7 @@ export default function GamesPage() {
             {activeGameId === 'pong' && <AstroPong />}
             {activeGameId === 'jump' && <NeonDinoJump />}
             {activeGameId === 'snake' && <RetroCyberSnake />}
+            {activeGameId === 'slice' && <NeonFruitSlasher />}
           </div>
         </div>
       </main>
