@@ -154,7 +154,7 @@ const PREMIUM_GAMES: GameItem[] = [
 // =========================================================
 // 🕹️ MODULE 1: NEON BRICK BREAKER COMPONENT
 // =========================================================
-function NeonBrickBreaker() {
+function NeonBrickBreaker({ canvasHeight = 500 }: { canvasHeight?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
@@ -330,16 +330,16 @@ function NeonBrickBreaker() {
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [isPlaying, resetTrigger, isGameOver, isGameWon]);
+  }, [isPlaying, resetTrigger, isGameOver, isGameWon, canvasHeight]);
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
-          height={500}
-          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
+          height={canvasHeight}
+          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block"
         />
         
         {!isPlaying && !isGameOver && !isGameWon && (
@@ -394,7 +394,7 @@ function NeonBrickBreaker() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-cyan-400 font-heading text-xs sm:text-base">{score}</strong></span>
         <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
         <span className="hidden md:inline">Drag / move mouse to play</span>
@@ -406,7 +406,7 @@ function NeonBrickBreaker() {
 // =========================================================
 // 🕹️ MODULE 2: MULTI-BALL CHAOS COMPONENT
 // =========================================================
-function MultiBallChaos() {
+function MultiBallChaos({ canvasHeight = 500 }: { canvasHeight?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
@@ -589,16 +589,16 @@ function MultiBallChaos() {
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [isPlaying, resetTrigger, isGameOver, isGameWon]);
+  }, [isPlaying, resetTrigger, isGameOver, isGameWon, canvasHeight]);
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
-          height={500}
-          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
+          height={canvasHeight}
+          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block"
         />
         
         {!isPlaying && !isGameOver && !isGameWon && (
@@ -653,7 +653,7 @@ function MultiBallChaos() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-violet-400 font-heading text-xs sm:text-base">{score}</strong></span>
         <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
         <span className="hidden md:inline">Drag / move mouse to play</span>
@@ -665,7 +665,7 @@ function MultiBallChaos() {
 // =========================================================
 // 🕹️ MODULE 3: ASTRO PONG COMPONENT (VS AI)
 // =========================================================
-function AstroPong() {
+function AstroPong({ canvasHeight = 500 }: { canvasHeight?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [playerScore, setPlayerScore] = useState(0);
   const [aiScore, setAiScore] = useState(0);
@@ -874,16 +874,16 @@ function AstroPong() {
       canvas.removeEventListener('mousemove', handleMouseMove);
       canvas.removeEventListener('touchmove', handleTouchMove);
     };
-  }, [isPlaying, resetTrigger, isGameOver]);
+  }, [isPlaying, resetTrigger, isGameOver, canvasHeight]);
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
-          height={500}
-          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
+          height={canvasHeight}
+          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block"
         />
 
         {/* Score Ticker on Screen Overlay */}
@@ -926,7 +926,7 @@ function AstroPong() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
         <span>Streak: <strong className="text-pink-400 font-heading text-xs sm:text-base">{winStreak}</strong></span>
         <span>Best Streak: <strong className="text-amber-400 font-heading text-xs sm:text-base">{bestStreak}</strong></span>
         <span className="hidden md:inline">Drag / move mouse vertically to steer</span>
@@ -938,7 +938,7 @@ function AstroPong() {
 // =========================================================
 // 🕹️ MODULE 4: NEON DINO JUMP COMPONENT (ASTRO RUN)
 // =========================================================
-function NeonDinoJump() {
+function NeonDinoJump({ canvasHeight = 500 }: { canvasHeight?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
@@ -1257,16 +1257,16 @@ function NeonDinoJump() {
       window.removeEventListener('keydown', handleKeyDown);
       canvas.removeEventListener('click', handleCanvasTouch);
     };
-  }, [isPlaying, resetTrigger, isGameOver, highScore]);
+  }, [isPlaying, resetTrigger, isGameOver, highScore, canvasHeight]);
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
-          height={500}
-          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
+          height={canvasHeight}
+          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block"
         />
 
         {!isPlaying && !isGameOver && (
@@ -1303,7 +1303,7 @@ function NeonDinoJump() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-green-400 font-heading text-xs sm:text-base">{score}</strong></span>
         <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
         <span className="hidden md:inline">Tap / Press Space to jump</span>
@@ -1315,7 +1315,7 @@ function NeonDinoJump() {
 // =========================================================
 // 🕹️ MODULE 5: RETRO CYBER SNAKE COMPONENT
 // =========================================================
-function RetroCyberSnake() {
+function RetroCyberSnake({ canvasHeight = 500 }: { canvasHeight?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
@@ -1346,8 +1346,8 @@ function RetroCyberSnake() {
     if (!ctx) return;
 
     const gridWidth = 45;
-    const gridHeight = 25;
     const blockSize = 20;
+    const gridHeight = Math.floor(canvasHeight / blockSize);
 
     let snake = [
       { x: 10, y: 12 },
@@ -1565,16 +1565,16 @@ function RetroCyberSnake() {
       canvas.removeEventListener('touchstart', handleTouchStart);
       canvas.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [isPlaying, resetTrigger, isGameOver]);
+  }, [isPlaying, resetTrigger, isGameOver, canvasHeight]);
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
-          height={500}
-          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block"
+          height={canvasHeight}
+          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block"
         />
 
         {!isPlaying && !isGameOver && (
@@ -1611,7 +1611,7 @@ function RetroCyberSnake() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-amber-500 font-heading text-xs sm:text-base">{score}</strong></span>
         <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
         <span className="hidden md:inline">WASD / Swipe to navigate</span>
@@ -1623,7 +1623,7 @@ function RetroCyberSnake() {
 // =========================================================
 // 🕹️ MODULE 6: NEON FRUIT SLASHER COMPONENT (CYBER SLICE)
 // =========================================================
-function NeonFruitSlasher() {
+function NeonFruitSlasher({ canvasHeight = 500 }: { canvasHeight?: number }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
@@ -1702,7 +1702,9 @@ function NeonFruitSlasher() {
       const targetX = canvas.width / 2;
       const xDiff = targetX - x;
       const vx = xDiff * 0.01 + (Math.random() - 0.5) * 1.5;
-      const vy = -(Math.random() * 4 + 11.5);
+      const targetHeight = canvasHeight - 80;
+      const baseVy = Math.sqrt(2 * gravity * targetHeight);
+      const vy = -(baseVy * (0.85 + Math.random() * 0.3));
 
       if (isBombChance) {
         items.push({
@@ -2084,16 +2086,16 @@ function NeonFruitSlasher() {
       canvas.removeEventListener('touchmove', onTouchMove);
       canvas.removeEventListener('touchend', handlePointerEnd);
     };
-  }, [isPlaying, resetTrigger, isGameOver]);
+  }, [isPlaying, resetTrigger, isGameOver, canvasHeight]);
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="relative border-x-0 sm:border border-white/10 bg-[#0a0a0c] rounded-none sm:rounded-2xl overflow-hidden shadow-2xl p-0.5 sm:p-1 w-full max-w-[900px]">
+      <div className="relative border border-white/10 bg-[#0a0a0c] rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl p-1 w-full max-w-[900px]">
         <canvas
           ref={canvasRef}
           width={900}
-          height={500}
-          className="w-full h-auto bg-[#070709] rounded-none sm:rounded-xl block cursor-crosshair"
+          height={canvasHeight}
+          className="w-full h-auto bg-[#070709] rounded-lg sm:rounded-xl block cursor-crosshair"
         />
 
         {!isPlaying && !isGameOver && (
@@ -2132,7 +2134,7 @@ function NeonFruitSlasher() {
         )}
       </div>
 
-      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-4 sm:px-2 w-full max-w-[900px]">
+      <div className="flex justify-between items-center font-mono text-[8.5px] sm:text-[10px] text-white/50 uppercase tracking-widest mt-4 px-0 sm:px-2 w-full max-w-[900px]">
         <span>Score: <strong className="text-red-400 font-heading text-xs sm:text-base">{score}</strong></span>
         <span>Lives: <strong className="text-red-500 font-heading text-xs sm:text-base">{'❤️'.repeat(Math.max(0, lives)) || '☠️'}</strong></span>
         <span>High Score: <strong className="text-amber-400 font-heading text-xs sm:text-base">{highScore}</strong></span>
@@ -2148,6 +2150,36 @@ function NeonFruitSlasher() {
 export default function GamesPage() {
   const [activeGameId, setActiveGameId] = useState<string>('breaker');
   const activeGame = PREMIUM_GAMES.find(g => g.id === activeGameId) || PREMIUM_GAMES[0];
+  const [canvasHeight, setCanvasHeight] = useState(500);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        const width = window.innerWidth;
+        const height = window.innerHeight;
+        
+        if (width < 640) {
+          // Mobile layout
+          // Subtract estimated non-canvas elements' vertical footprint (header, padding, buttons, footer, etc.)
+          const availableHeight = height - 380;
+          const cabinetWidth = width - 32; // 16px padding on left & right
+          
+          let calculatedHeight = Math.floor((availableHeight / cabinetWidth) * 900);
+          // Clamp to reasonable ranges to preserve gameplay physics & visuals
+          if (calculatedHeight < 650) calculatedHeight = 650;
+          if (calculatedHeight > 1050) calculatedHeight = 1050;
+          
+          setCanvasHeight(calculatedHeight);
+        } else {
+          setCanvasHeight(500);
+        }
+      };
+      
+      handleResize();
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen w-full bg-[#0a0a0c] text-white relative overflow-x-hidden font-body selection:bg-white selection:text-black flex flex-col">
@@ -2192,7 +2224,7 @@ export default function GamesPage() {
       </header>
 
       {/* Main Workspace (Stacked Vertical Layout for Larger Canvas Area) */}
-      <main className="flex-1 max-w-[1200px] w-full mx-auto px-0 sm:px-6 py-4 relative z-10 flex flex-col items-center gap-6">
+      <main className="flex-1 max-w-[1200px] w-full mx-auto px-4 sm:px-6 py-4 relative z-10 flex flex-col items-center gap-6">
         
         {/* Game deck selector: Horizontal list at the top */}
         <div className="w-full max-w-[960px] select-none">
@@ -2254,7 +2286,7 @@ export default function GamesPage() {
 
         {/* High Contrast Arcade Monitor cabinet (Fills remaining width, larger dimensions) */}
         <div 
-          className="w-full md:max-w-[960px] p-0 sm:p-6 md:p-8 rounded-none sm:rounded-3xl border-x-0 sm:border bg-[#121217] relative flex flex-col shadow-2xl transition-all duration-500"
+          className="w-full md:max-w-[960px] p-4 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl border bg-[#121217] relative flex flex-col shadow-2xl transition-all duration-500"
           style={{
             borderColor: `${activeGame.accent}25`,
             boxShadow: `0 10px 40px -10px rgba(0,0,0,0.7), 0 0 30px ${activeGame.accent}08`,
@@ -2262,7 +2294,7 @@ export default function GamesPage() {
         >
           
           {/* Cabinet view header status */}
-          <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6 shrink-0 px-4 sm:px-0">
+          <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-6 shrink-0 px-0">
             <div className="flex items-center gap-2 sm:gap-3">
               <Tv 
                 className="w-4 h-4 sm:w-5 sm:h-5 transition-colors duration-500 shrink-0" 
@@ -2291,12 +2323,12 @@ export default function GamesPage() {
 
           {/* Large Game Workspace */}
           <div className="flex-1 flex flex-col justify-center items-center w-full">
-            {activeGameId === 'breaker' && <NeonBrickBreaker />}
-            {activeGameId === 'multiball' && <MultiBallChaos />}
-            {activeGameId === 'pong' && <AstroPong />}
-            {activeGameId === 'jump' && <NeonDinoJump />}
-            {activeGameId === 'snake' && <RetroCyberSnake />}
-            {activeGameId === 'slice' && <NeonFruitSlasher />}
+            {activeGameId === 'breaker' && <NeonBrickBreaker canvasHeight={canvasHeight} />}
+            {activeGameId === 'multiball' && <MultiBallChaos canvasHeight={canvasHeight} />}
+            {activeGameId === 'pong' && <AstroPong canvasHeight={canvasHeight} />}
+            {activeGameId === 'jump' && <NeonDinoJump canvasHeight={canvasHeight} />}
+            {activeGameId === 'snake' && <RetroCyberSnake canvasHeight={canvasHeight} />}
+            {activeGameId === 'slice' && <NeonFruitSlasher canvasHeight={canvasHeight} />}
           </div>
         </div>
       </main>
