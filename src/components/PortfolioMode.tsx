@@ -59,6 +59,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
   }, [mobileMenuOpen]);
 
   const handleMouseMove = (e: React.MouseEvent<any>, name: string) => {
+    if (typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -532,22 +533,13 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
               >
                 Resume
               </a>
-              <button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onSwitchMode();
-                }}
-                className="w-full text-center border border-white/10 hover:border-white/20 bg-white/[0.02] text-white/80 font-semibold font-heading text-xs uppercase tracking-widest rounded-full py-4 transition-all duration-200"
-              >
-                Design File
-              </button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* ─── Hero Section ─── */}
-      <section className="max-w-[1320px] mx-auto px-6 pt-28 pb-16 md:pt-36 md:pb-24 relative z-10 text-left">
+      <section className="max-w-[1320px] mx-auto px-6 pt-24 pb-16 md:pt-36 md:pb-24 relative z-10 text-left">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -573,8 +565,8 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
 
               {/* Main headline */}
               <h1
-                className="font-heading font-light text-white leading-[1.06] tracking-tight mb-8"
-                style={{ fontSize: "clamp(2.8rem, 5.5vw, 4.8rem)" }}
+                className="font-heading font-light text-white leading-[1.15] md:leading-[1.06] tracking-tight mb-8"
+                style={{ fontSize: "clamp(2.1rem, 6vw, 4.8rem)" }}
               >
                 <span className="block lg:inline-block lg:whitespace-nowrap">
                   <SplitText
@@ -590,7 +582,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
                     textAlign="left"
                   />
                 </span>
-                <br />
+                <br className="hidden lg:block" />
                 <span className="block lg:inline-block lg:whitespace-nowrap">
                   <SplitText
                     text="that "
@@ -609,10 +601,11 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
                     tag="span"
                     className="relative inline-block animate-pulse-glow"
                     style={{
-                      background: "linear-gradient(135deg, #a78bfa 0%, #818cf8 40%, #38bdf8 100%)",
+                      background: "linear-gradient(135deg, #c084fc 0%, #f472b6 45%, #60a5fa 100%)",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                       backgroundClip: "text",
+                      color: "#a78bfa",
                     }}
                     delay={35}
                     duration={0.7}
@@ -623,7 +616,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
                     textAlign="left"
                   />
                 </span>
-                <br />
+                <br className="hidden lg:block" />
                 <span className="text-white/55 font-extralight block lg:inline-block lg:whitespace-nowrap">
                   <SplitText
                     text="Interfaces that convert."
@@ -767,7 +760,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
       {/* ─── Case Study Index Section ─── */}
       <section id="work" className="relative py-28 md:py-36 overflow-hidden">
         {/* Background ambient glow orbs */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden hidden md:block">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] rounded-full bg-gradient-to-b from-violet-600/[0.04] via-indigo-500/[0.02] to-transparent blur-[120px]" />
           <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-sky-600/[0.03] blur-[100px]" />
           <div className="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full bg-violet-500/[0.03] blur-[100px]" />
@@ -1356,7 +1349,7 @@ export default function PortfolioMode({ onSwitchMode }: PortfolioModeProps) {
       {/* ─── Testimonials Section ─── */}
       <section className="max-w-[1320px] mx-auto px-6 py-24 border-t border-white/[0.04] relative overflow-hidden">
         {/* Subtle background glow blobs */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 overflow-hidden hidden md:block">
           <div className="absolute -top-24 left-1/4 w-96 h-96 rounded-full bg-violet-600/[0.06] blur-[100px]" />
           <div className="absolute -bottom-24 right-1/4 w-96 h-96 rounded-full bg-sky-600/[0.06] blur-[100px]" />
         </div>

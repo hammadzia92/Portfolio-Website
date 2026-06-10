@@ -43,10 +43,19 @@ export default function SplitText({
   const ref = useRef<HTMLElement | null>(null);
   const animationCompletedRef = useRef(false);
   const onCompleteRef = useRef(onLetterAnimationComplete);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     onCompleteRef.current = onLetterAnimationComplete;
   }, [onLetterAnimationComplete]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    }
+  }, []);
+
+  const effectiveSplitType = isMobile ? "words" : splitType;
 
   useGSAP(
     () => {
@@ -106,7 +115,7 @@ export default function SplitText({
         delay,
         duration,
         ease,
-        splitType,
+        effectiveSplitType,
         JSON.stringify(from),
         JSON.stringify(to),
         threshold,
@@ -117,7 +126,7 @@ export default function SplitText({
   );
 
   const renderContent = () => {
-    if (splitType === "chars") {
+    if (effectiveSplitType === "chars") {
       return text.split(" ").map((word, wordIdx) => (
         <span
           key={wordIdx}
